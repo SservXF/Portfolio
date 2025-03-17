@@ -1,0 +1,12 @@
+services:
+  react:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: portfolio-react-vite
+    image: portfolio-react-vite
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./src:/app/src
+      - ./public:/app/public

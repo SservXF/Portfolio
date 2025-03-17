@@ -1,9 +1,13 @@
+import AnimatedPage from '../components/AnimatedPage'
+
 function Portfolio() {
   return (
-    <div>
-      <h1>Portfolio</h1>
-      <p>Here are some projects...</p>
-    </div>
+    <AnimatedPage>
+      <div>
+        <h1>Portfolio</h1>
+        <p>Here are some projects...</p>
+      </div>
+    </AnimatedPage>
   )
 }
 

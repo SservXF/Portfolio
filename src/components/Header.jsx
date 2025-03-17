@@ -13,10 +13,10 @@ function Header() {
   return (
     <>
       <header className="flex justify-between items-center p-4 bg-gray-800 text-white relative z-60">
-        <div className="text-xl font-bold">
+        <div className="text-xl font-bold" onClick={() => setMenuOpen(false)}>
           <Link to="/">Servan</Link>
         </div>
-        <button onClick={toggleMenu} className="flex justify-center items-center">
+        <button onClick={toggleMenu} className="cursor-pointer flex justify-center items-center">
           {menuOpen ? (
             // close icon
             <svg className="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">

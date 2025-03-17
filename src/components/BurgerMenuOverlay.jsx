@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 
 const overlayVariants = {
-  hidden: { y: '-100%', opacity: 0 },
-  visible: { y: 0, opacity: 1 },
-  exit: { y: '-100%', opacity: 0 },
+  hidden: { y: '-100%', opacity: 0 }, // Status initial, il est caché tout en haut en opacity 0
+  visible: { y: 0, opacity: 1 },    // Status visible, il se déplace vers le bas en opacity 1
+  exit: { y: '-100%', opacity: 0 },   // Status exit, il se déplace vers le haut en opacity 0
 }
 
 function BurgerMenuOverlay({ onClose }) {

@@ -1,10 +1,16 @@
 import { Link } from 'react-router-dom'
 import AnimatedPage from '../components/AnimatedPage'
 
+const homeVariants = {
+  initial: { y: '-100%', opacity: 0 },
+  animate: { y: '0%', opacity: 1 },
+  exit: { y: '-100%', opacity: 0 },
+}
+
 function Home() {
   return (
-    <AnimatedPage>
-      <div>
+    <AnimatedPage variants={homeVariants}>
+      <div className="h-screen">
         <h1>Home</h1>
         <nav>
           <Link to="/portfolio">Portfolio</Link> |{' '}

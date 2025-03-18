@@ -1,25 +1,26 @@
 import { motion } from 'framer-motion'
 
-const pageVariants = {
+const defaultVariants = {
   initial: { opacity: 0, x: 50 },
-  in: { opacity: 1, x: 0 },
-  out: { opacity: 0, x: -50 },
+  animate: { opacity: 1, x: 0 },
+  exit: { opacity: 0, x: -50 },
 }
 
-const pageTransition = {
+const defaultTransition = {
   type: 'tween',
   ease: 'easeInOut',
   duration: 0.3,
 }
 
-function AnimatedPage({ children }) {
+function AnimatedPage({ children, variants = defaultVariants, transition = defaultTransition, ...rest }) {
   return (
     <motion.div
       initial="initial"
-      animate="in"
-      exit="out"
-      variants={pageVariants}
-      transition={pageTransition}
+      animate="animate"
+      exit="exit"
+      variants={variants}
+      transition={transition}
+      {...rest}
     >
       {children}
     </motion.div>

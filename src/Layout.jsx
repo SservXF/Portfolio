@@ -1,5 +1,6 @@
 import React from 'react'
 import Header from './components/Header'
+import LeftBar from './components/LeftBar'
 import { Outlet, useLocation } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 import { Routes, Route, useRoutes } from 'react-router-dom'
@@ -12,18 +13,21 @@ function Layout() {
   const location = useLocation()
 
   return (
-    <div>
+    <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="p-4">
-        <AnimatePresence mode="wait" initial={false}>
-          <Routes location={location} key={location.pathname}>
-            <Route path="/" element={<Home />} />
-            <Route path="/portfolio" element={<Portfolio />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
-          </Routes>
-        </AnimatePresence>
-      </main>
+      <div className="flex flex-col md:flex-row flex-1"> {/* Container for sidebar and main content */}
+        <LeftBar />
+        <main className="flex-1 md:ml-16"> {/* Add margin-left on desktop to account for sidebar */}
+          <AnimatePresence mode="wait" initial={false}>
+            <Routes location={location} key={location.pathname}>
+              <Route path="/" element={<Home />} />
+              <Route path="/portfolio" element={<Portfolio />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/contact" element={<Contact />} />
+            </Routes>
+          </AnimatePresence>
+        </main>
+      </div>
     </div>
   )
 }

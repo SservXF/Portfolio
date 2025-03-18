@@ -12,7 +12,7 @@ function Header() {
 
   return (
     <>
-      <header className="flex justify-between items-center p-4 bg-gray-800 text-white relative z-60">
+      <header className="sticky top-0 left-0 right-0 flex justify-between items-center p-4 bg-gray-800 text-white z-60">
         <div className="text-xl font-bold" onClick={() => setMenuOpen(false)}>
           <Link to="/">Servan</Link>
         </div>

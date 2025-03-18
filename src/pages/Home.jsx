@@ -2,9 +2,9 @@ import { Link } from 'react-router-dom'
 import AnimatedPage from '../components/AnimatedPage'
 
 const homeVariants = {
-  initial: { y: '-100%', opacity: 0 },
+  initial: { y: '-100%', opacity: 1 },
   animate: { y: '0%', opacity: 1 },
-  exit: { y: '-100%', opacity: 0 },
+  exit: { y: '-100%', opacity: 1 },
 }
 
 function Home() {

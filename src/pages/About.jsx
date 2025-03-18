@@ -3,7 +3,7 @@ import AnimatedPage from '../components/AnimatedPage'
 function About() {
   return (
     <AnimatedPage>
-      <div className="h-screen">
+      <div>
         <h1>About</h1>
         <p>About me...</p>
       </div>

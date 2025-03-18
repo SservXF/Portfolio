@@ -16,7 +16,6 @@ function Layout() {
     <div className="min-h-screen flex flex-col">
       <Header />
       <div className="flex flex-col md:flex-row flex-1"> {/* Container for sidebar and main content */}
-        <LeftBar />
         <main className="flex-1 md:ml-16"> {/* Add margin-left on desktop to account for sidebar */}
           <AnimatePresence mode="wait" initial={false}>
             <Routes location={location} key={location.pathname}>
@@ -27,6 +26,7 @@ function Layout() {
             </Routes>
           </AnimatePresence>
         </main>
+        <LeftBar />
       </div>
     </div>
   )

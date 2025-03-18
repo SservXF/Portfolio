@@ -3,7 +3,7 @@ import { GITHUB_ICON_PATH, LINKEDIN_ICON_PATH } from '../constants/socialIcons'
 
 function LeftBar() {
   return (
-    <div className="fixed md:left-0 md:top-1/2 md:-translate-y-1/2 bottom-4 left-1/2 -translate-x-1/2 md:translate-x-0 flex md:flex-col gap-4 md:justify-center md:items-center md:w-16 p-2">
+    <div className="flex justify-center items-center gap-4 p-4 md:fixed md:h-screen md:left-0 md:top-1/2 md:-translate-y-1/2 md:w-16 md:flex-col md:bg-gray-900">
       <a
         href="https://github.com/SservXF"
         target="_blank"

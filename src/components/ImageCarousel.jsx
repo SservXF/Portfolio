@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { ChevronLeft, ChevronRight, Maximize2, X } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 
@@ -12,6 +12,7 @@ export default function ImageCarousel({
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isPaused, setIsPaused] = useState(false)
   const [isFullscreen, setIsFullscreen] = useState(false)
+  const previousOverflowRef = useRef('')
 
   // If no media or only one item, show simple image
   if (!media || media.length === 0) return null
@@ -65,12 +66,19 @@ export default function ImageCarousel({
   // Prevent body scroll when fullscreen
   useEffect(() => {
     if (isFullscreen) {
+      // Save current overflow state before changing it
+      previousOverflowRef.current = document.body.style.overflow
       document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = ''
+    } else if (previousOverflowRef.current !== null) {
+      // Restore previous overflow state only when closing fullscreen
+      document.body.style.overflow = previousOverflowRef.current
     }
+    
+    // Cleanup on unmount
     return () => {
-      document.body.style.overflow = ''
+      if (isFullscreen && previousOverflowRef.current !== null) {
+        document.body.style.overflow = previousOverflowRef.current
+      }
     }
   }, [isFullscreen])
 

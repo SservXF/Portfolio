@@ -1,12 +1,15 @@
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Download, Mail, Github, Linkedin } from 'lucide-react'
 import Section from '../components/Section'
 import SectionTitle from '../components/SectionTitle'
+import CVPreviewModal from '../components/CVPreviewModal'
 import { useLanguage } from '../context/LanguageContext'
 import { personalInfo } from '../config/personal'
 
 export default function ContactSection() {
   const { t } = useLanguage()
+  const [isCVModalOpen, setIsCVModalOpen] = useState(false)
 
   const contactLinks = [
     {
@@ -35,14 +38,13 @@ export default function ContactSection() {
           viewport={{ once: true }}
           className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8"
         >
-          <a
-            href={personalInfo.cvUrl}
-            download
+          <button
+            onClick={() => setIsCVModalOpen(true)}
             className="flex items-center gap-2 px-6 py-3 bg-[var(--color-primary)] text-white font-medium rounded-full hover:bg-[var(--color-primary-hover)] transition-colors shadow-lg hover:shadow-xl"
           >
             <Download size={20} />
             <span>{t('contact.downloadCV')}</span>
-          </a>
+          </button>
 
           <a
             href={`mailto:${personalInfo.email}`}
@@ -92,6 +94,13 @@ export default function ContactSection() {
           {personalInfo.email}
         </motion.p>
       </div>
+
+      {/* CV Preview Modal */}
+      <CVPreviewModal
+        isOpen={isCVModalOpen}
+        onClose={() => setIsCVModalOpen(false)}
+        cvUrl={personalInfo.cvUrl}
+      />
     </Section>
   )
 }

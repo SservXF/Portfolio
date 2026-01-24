@@ -107,7 +107,8 @@ export const translations = {
   },
 }
 
+// Les images sont retrouvables comme ceci : https://flagcdn.com/w40/fr.png
 export const availableLanguages = [
-  { code: 'en', name: 'English', flag: '🇬🇧' },
-  { code: 'fr', name: 'Français', flag: '🇫🇷' },
+  { code: 'en', name: 'English', flag: 'gb' },
+  { code: 'fr', name: 'Français', flag: 'fr' },
 ]

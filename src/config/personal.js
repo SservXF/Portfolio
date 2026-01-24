@@ -11,11 +11,11 @@ export const personalInfo = {
   email: 'yazici.servan94@gmail.com',
   github: 'https://github.com/SservXF',
   linkedin: 'https://linkedin.com/in/servan-yazici/',
-  cvUrl: '/cv.pdf',
+  cvUrl: '/cv_YAZICI_Servan.pdf',
 }
 
 // ============================================
-// PROJECTS - Add your projects here
+// PROJECTS
 // ============================================
 export const projects = [
   {

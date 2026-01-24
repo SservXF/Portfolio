@@ -102,7 +102,14 @@ export default function Header() {
                               : 'text-[var(--color-text)]'
                           }`}
                         >
-                          <span>{lang.flag}</span>
+                          <img 
+                            src={`/flags/w20/${lang.flag}.png`}
+                            srcSet={`/flags/w40/${lang.flag}.png 2x`}
+                            width="20"
+                            height="15"
+                            alt={`${lang.name} flag`}
+                            className="rounded-sm"
+                          />
                           <span>{lang.name}</span>
                         </button>
                       ))}

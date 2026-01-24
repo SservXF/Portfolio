@@ -1,9 +1,13 @@
 import { motion } from 'framer-motion'
 import { Github, ExternalLink, Eye } from 'lucide-react'
 import { useLanguage } from '../context/LanguageContext'
+import ImageCarousel from './ImageCarousel'
 
 export default function ProjectCard({ project, onClick, index }) {
   const { t, getLocalizedContent } = useLanguage()
+
+  // Support both old 'image' format and new 'media' format
+  const projectMedia = project.media || (project.image ? [project.image] : null)
 
   return (
     <motion.article
@@ -14,15 +18,15 @@ export default function ProjectCard({ project, onClick, index }) {
       onClick={onClick}
       className="group cursor-pointer bg-[var(--color-card)] rounded-2xl overflow-hidden border border-[var(--color-border)] hover:border-[var(--color-primary)] transition-all duration-300 hover:shadow-xl"
     >
-      {/* Project Image */}
-      {project.image && (
+      {/* Project Image/Carousel */}
+      {projectMedia && (
         <div className="relative h-48 overflow-hidden bg-[var(--color-background-tertiary)]">
-          <img
-            src={project.image}
+          <ImageCarousel
+            media={projectMedia}
             alt={project.title}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-card)] to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-card)] to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
         </div>
       )}
 

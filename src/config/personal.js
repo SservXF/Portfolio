@@ -15,12 +15,12 @@ export const personalInfo = {
 }
 
 // ============================================
-// PROJECTS
+// PROJECTS - Add your projects here
 // ============================================
 export const projects = [
   {
     id: 1,
-    title: 'Project One',
+    title: '2 in 1 : Slither.io & Snake',
     description: {
       en: 'A brief description',
       fr: 'Une brève description',
@@ -29,15 +29,19 @@ export const projects = [
       en: 'A more detailed description',
       fr: "Une description plus détaillée",
     },
-    image: '/projects/project1.png', // Place images in public/projects/
-    technologies: ['React', 'Node.js', 'MongoDB', 'Tailwind CSS'],
-    githubUrl: 'https://github.com/SservXF/project1',
-    // liveUrl: 'https://project1.example.com', // Optionnel
+    media: [
+      { url: '/projects/slitherio/slitherio1.gif', duration: 8000 }, // GIF - 8 seconds
+      { url: '/projects/slitherio/snakeSelection.png', duration: 3000 }, // Image - 3 seconds
+      { url: '/projects/slitherio/snake1.gif', duration: 8000 },
+    ],
+    technologies: ['Java', 'JavaFX', 'Gradle'],
+    githubUrl: 'https://github.com/SservXF/POO-Slither.io.git',
+    // liveUrl: 'https://project1.example.com', // Optional
     featured: true,
   },
   {
     id: 2,
-    title: 'Project Two',
+    title: 'Bomberman - C language',
     description: {
       en: 'Another amazing project',
       fr: 'Un autre projet incroyable',
@@ -46,9 +50,12 @@ export const projects = [
       en: 'Detailed explanation of project',
       fr: 'Explication détaillée du projet',
     },
-    image: '/projects/project2.gif',
-    technologies: ['Vue.js', 'Express', 'PostgreSQL'],
-    githubUrl: 'https://github.com/SservXF/project2',
+    media: [
+      { url: '/projects/bomberman/bomberman1.gif', duration: 15000 },
+      { url: '/projects/bomberman/bomberman2.gif', duration: 15000 }
+    ],
+    technologies: ['C', 'NCurses'],
+    githubUrl: 'https://github.com/SservXF/Bomberman-C.git',
     featured: true,
   },
   {

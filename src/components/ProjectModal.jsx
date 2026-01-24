@@ -1,22 +1,27 @@
 import { Github, ExternalLink } from 'lucide-react'
 import Modal from './Modal'
 import { useLanguage } from '../context/LanguageContext'
+import ImageCarousel from './ImageCarousel'
 
 export default function ProjectModal({ project, isOpen, onClose }) {
   const { t, getLocalizedContent } = useLanguage()
 
   if (!project) return null
 
+  // Support both old 'image' format and new 'media' format
+  const projectMedia = project.media || (project.image ? [project.image] : null)
+
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <div className="p-6 md:p-8">
-        {/* Image */}
-        {project.image && (
+        {/* Image/Carousel */}
+        {projectMedia && (
           <div className="relative h-64 md:h-80 -mx-6 md:-mx-8 -mt-6 md:-mt-8 mb-6 overflow-hidden bg-[var(--color-background-tertiary)]">
-            <img
-              src={project.image}
+            <ImageCarousel
+              media={projectMedia}
               alt={project.title}
               className="w-full h-full object-cover"
+              showFullscreenButton={true}
             />
           </div>
         )}

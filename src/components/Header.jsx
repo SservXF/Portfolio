@@ -7,7 +7,7 @@ import { useLanguage } from '../context/LanguageContext'
 import { personalInfo } from '../config/personal'
 
 export default function Header() {
-  const { visible } = useScrollDirection()
+  const { visible, setScrollLocked } = useScrollDirection()
   const { theme, toggleTheme } = useTheme()
   const { t, language, setLanguage, availableLanguages } = useLanguage()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -24,7 +24,11 @@ export default function Header() {
   const scrollToSection = (href) => {
     const element = document.querySelector(href)
     if (element) {
+      // Lock header visibility during smooth scroll
+      setScrollLocked(true)
       element.scrollIntoView({ behavior: 'smooth' })
+      // Unlock after scroll completes (approximate duration)
+      setTimeout(() => setScrollLocked(false), 1000)
     }
     setMobileMenuOpen(false)
   }

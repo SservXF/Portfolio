@@ -16,6 +16,13 @@ export default function ImageCarousel({
   const [direction, setDirection] = useState(0) // -1 for left, 1 for right
   const [dragConstraints, setDragConstraints] = useState({ left: 0, right: 0 })
   const isDraggingRef = useRef(false)
+  const [displayIndex, setDisplayIndex] = useState(media.length) // Actual position in tripled array
+  const [shouldAnimate, setShouldAnimate] = useState(false)
+
+  // Enable animation after initial render to prevent slide-in on mount
+  useEffect(() => {
+    setShouldAnimate(true)
+  }, [])
 
   // If no media or only one item, show simple image
   if (!media || media.length === 0) return null
@@ -25,6 +32,7 @@ export default function ImageCarousel({
         src={typeof media[0] === 'string' ? media[0] : media[0].url}
         alt={alt}
         className={className}
+        draggable="false"
       />
     )
   }
@@ -35,18 +43,43 @@ export default function ImageCarousel({
 
   const goToNext = useCallback(() => {
     setDirection(1)
+    setDisplayIndex(prev => prev + 1)
     setCurrentIndex((prev) => (prev + 1) % media.length)
   }, [media.length])
 
   const goToPrev = () => {
     setDirection(-1)
+    setDisplayIndex(prev => prev - 1)
     setCurrentIndex((prev) => (prev - 1 + media.length) % media.length)
   }
 
   const goToSlide = (index) => {
     setDirection(index > currentIndex ? 1 : -1)
+    const diff = index - currentIndex
+    setDisplayIndex(prev => prev + diff)
     setCurrentIndex(index)
   }
+
+  // Reset displayIndex when it wraps too far
+  useEffect(() => {
+    if (displayIndex >= media.length * 2) {
+      // Wrapped forward past the end of middle set - wait for animation, then snap back instantly
+      setTimeout(() => {
+        setShouldAnimate(false)
+        setDisplayIndex(displayIndex - media.length)
+        // Re-enable animation on next frame
+        requestAnimationFrame(() => setShouldAnimate(true))
+      }, 300)
+    } else if (displayIndex < media.length) {
+      // Wrapped backward past the start of middle set - wait for animation, then snap back instantly
+      setTimeout(() => {
+        setShouldAnimate(false)
+        setDisplayIndex(displayIndex + media.length)
+        // Re-enable animation on next frame
+        requestAnimationFrame(() => setShouldAnimate(true))
+      }, 300)
+    }
+  }, [displayIndex, media.length])
 
   // Auto-play functionality
   useEffect(() => {
@@ -100,10 +133,11 @@ export default function ImageCarousel({
 
   const handleDragEnd = (e, { offset, velocity }) => {
     const swipe = swipePower(offset.x, velocity.x)
-
-    if (swipe < -swipeConfidenceThreshold) {
+    
+    // Require significant drag distance (at least 30px) or high velocity swipe
+    if (offset.x < -30 || swipe < -swipeConfidenceThreshold) {
       goToNext()
-    } else if (swipe > swipeConfidenceThreshold) {
+    } else if (offset.x > 30 || swipe > swipeConfidenceThreshold) {
       goToPrev()
     }
 
@@ -150,28 +184,27 @@ export default function ImageCarousel({
     >
       {/* Main Image Display */}
       <div className="relative w-full h-full overflow-hidden">
-        <AnimatePresence initial={false} custom={direction} mode="popLayout">
-          <motion.img
-            key={currentIndex}
-            src={currentMedia.url}
-            alt={`${alt} - ${currentIndex + 1}`}
-            className={className}
-            custom={direction}
-            variants={variants}
-            initial="enter"
-            animate="center"
-            exit="exit"
-            transition={{
-              x: { type: "spring", stiffness: 300, damping: 30 },
-              opacity: { duration: 0.2 }
-            }}
-            drag="x"
-            dragConstraints={{ left: 0, right: 0 }}
-            dragElastic={1}
-            onDragStart={handleDragStart}
-            onDragEnd={handleDragEnd}
-          />
-        </AnimatePresence>
+        <motion.div
+          className="flex h-full"
+          animate={{ x: `-${displayIndex * 100}%` }}
+          transition={shouldAnimate ? { type: "tween", duration: 0.3, ease: "easeOut" } : { duration: 0 }}
+          drag="x"
+          dragElastic={0.7}
+          onDragStart={handleDragStart}
+          onDragEnd={handleDragEnd}
+        >
+          {/* Render images three times for infinite wrapping */}
+          {[...media, ...media, ...media].map((item, index) => (
+            <div key={index} className="min-w-full h-full flex-shrink-0">
+              <img
+                src={typeof item === 'string' ? item : item.url}
+                alt={`${alt} - ${(index % media.length) + 1}`}
+                className={className}
+                draggable="false"
+              />
+            </div>
+          ))}
+        </motion.div>
       </div>
 
       {/* Navigation Arrows - Always visible on mobile */}
@@ -263,30 +296,41 @@ export default function ImageCarousel({
               className="relative w-full h-full max-w-7xl max-h-[90vh] flex items-center justify-center"
             >
               {/* Main Image Display */}
-              <div className="relative w-full h-full flex items-center justify-center">
-                <AnimatePresence initial={false} custom={direction} mode="popLayout">
-                  <motion.img
-                    key={currentIndex}
-                    src={currentMedia.url}
-                    alt={`${alt} - ${currentIndex + 1}`}
-                    className="max-w-full max-h-full object-contain"
-                    custom={direction}
-                    variants={variants}
-                    initial="enter"
-                    animate="center"
-                    exit="exit"
-                    transition={{
-                      x: { type: "spring", stiffness: 300, damping: 30 },
-                      opacity: { duration: 0.2 }
-                    }}
-                    drag="x"
-                    dragConstraints={{ left: 0, right: 0 }}
-                    dragElastic={1}
-                    onDragStart={handleDragStart}
-                    onDragEnd={handleDragEnd}
-                    onClick={(e) => e.stopPropagation()}
-                  />
-                </AnimatePresence>
+              <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
+                {media.map((item, index) => {
+                  // Calculate position with wrapping for smooth animation
+                  let offset = index - currentIndex
+                  if (offset > media.length / 2) {
+                    offset -= media.length
+                  } else if (offset < -media.length / 2) {
+                    offset += media.length
+                  }
+
+                  return (
+                    <motion.div
+                      key={index}
+                      className="absolute inset-0 flex items-center justify-center"
+                      initial={false}
+                      animate={{
+                        x: `${offset * 100}%`,
+                        opacity: index === currentIndex ? 1 : 0
+                      }}
+                      transition={{ type: "tween", duration: 0.3, ease: "easeOut" }}
+                      drag="x"
+                      dragElastic={0.7}
+                      onDragStart={handleDragStart}
+                      onDragEnd={handleDragEnd}
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <img
+                        src={typeof item === 'string' ? item : item.url}
+                        alt={`${alt} - ${index + 1}`}
+                        className="max-w-full max-h-full object-contain"
+                        draggable="false"
+                      />
+                    </motion.div>
+                  )
+                })}
               </div>
 
               {/* Navigation Arrows in Fullscreen */}

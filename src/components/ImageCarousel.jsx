@@ -13,6 +13,9 @@ export default function ImageCarousel({
   const [isPaused, setIsPaused] = useState(false)
   const [isFullscreen, setIsFullscreen] = useState(false)
   const previousOverflowRef = useRef('')
+  const [direction, setDirection] = useState(0) // -1 for left, 1 for right
+  const [dragConstraints, setDragConstraints] = useState({ left: 0, right: 0 })
+  const isDraggingRef = useRef(false)
 
   // If no media or only one item, show simple image
   if (!media || media.length === 0) return null
@@ -31,14 +34,17 @@ export default function ImageCarousel({
     : media[currentIndex]
 
   const goToNext = useCallback(() => {
+    setDirection(1)
     setCurrentIndex((prev) => (prev + 1) % media.length)
   }, [media.length])
 
   const goToPrev = () => {
+    setDirection(-1)
     setCurrentIndex((prev) => (prev - 1 + media.length) % media.length)
   }
 
   const goToSlide = (index) => {
+    setDirection(index > currentIndex ? 1 : -1)
     setCurrentIndex(index)
   }
 
@@ -82,35 +88,99 @@ export default function ImageCarousel({
     }
   }, [isFullscreen])
 
+  // Swipe detection
+  const swipeConfidenceThreshold = 10000
+  const swipePower = (offset, velocity) => {
+    return Math.abs(offset) * velocity
+  }
+
+  const handleDragStart = () => {
+    isDraggingRef.current = true
+  }
+
+  const handleDragEnd = (e, { offset, velocity }) => {
+    const swipe = swipePower(offset.x, velocity.x)
+
+    if (swipe < -swipeConfidenceThreshold) {
+      goToNext()
+    } else if (swipe > swipeConfidenceThreshold) {
+      goToPrev()
+    }
+
+    // Reset drag flag after a short delay to allow click event to be blocked
+    setTimeout(() => {
+      isDraggingRef.current = false
+    }, 100)
+  }
+
+  const handleClick = (e) => {
+    if (isDraggingRef.current) {
+      e.stopPropagation()
+      e.preventDefault()
+    }
+  }
+
+  const variants = {
+    enter: (direction) => {
+      return {
+        x: direction > 0 ? 300 : -300,
+        opacity: 0
+      }
+    },
+    center: {
+      zIndex: 1,
+      x: 0,
+      opacity: 1
+    },
+    exit: (direction) => {
+      return {
+        zIndex: 0,
+        x: direction < 0 ? 300 : -300,
+        opacity: 0
+      }
+    }
+  }
+
   const carousel = (
     <div 
       className="relative w-full h-full group"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
+      onClick={handleClick}
     >
       {/* Main Image Display */}
       <div className="relative w-full h-full overflow-hidden">
-        <AnimatePresence mode="wait">
+        <AnimatePresence initial={false} custom={direction} mode="popLayout">
           <motion.img
             key={currentIndex}
             src={currentMedia.url}
             alt={`${alt} - ${currentIndex + 1}`}
             className={className}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            custom={direction}
+            variants={variants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={{
+              x: { type: "spring", stiffness: 300, damping: 30 },
+              opacity: { duration: 0.2 }
+            }}
+            drag="x"
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={1}
+            onDragStart={handleDragStart}
+            onDragEnd={handleDragEnd}
           />
         </AnimatePresence>
       </div>
 
-      {/* Navigation Arrows */}
+      {/* Navigation Arrows - Always visible on mobile */}
       <button
         onClick={(e) => {
           e.stopPropagation()
           goToPrev()
         }}
-        className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/50 hover:bg-black/70 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-10"
+        className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/50 hover:bg-black/70 text-white flex items-center justify-center md:opacity-0 md:group-hover:opacity-100 transition-opacity z-10"
         aria-label="Previous image"
       >
         <ChevronLeft size={20} />
@@ -121,7 +191,7 @@ export default function ImageCarousel({
           e.stopPropagation()
           goToNext()
         }}
-        className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/50 hover:bg-black/70 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-10"
+        className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/50 hover:bg-black/70 text-white flex items-center justify-center md:opacity-0 md:group-hover:opacity-100 transition-opacity z-10"
         aria-label="Next image"
       >
         <ChevronRight size={20} />
@@ -158,7 +228,7 @@ export default function ImageCarousel({
             e.stopPropagation()
             setIsFullscreen(true)
           }}
-          className="absolute bottom-2 right-2 w-8 h-8 rounded-lg bg-black/50 hover:bg-black/70 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-10"
+          className="absolute bottom-2 right-2 w-8 h-8 rounded-lg bg-black/50 hover:bg-black/70 text-white flex items-center justify-center md:opacity-0 md:group-hover:opacity-100 transition-opacity z-10"
           aria-label="Fullscreen"
         >
           <Maximize2 size={18} />
@@ -191,20 +261,30 @@ export default function ImageCarousel({
 
             <div 
               className="relative w-full h-full max-w-7xl max-h-[90vh] flex items-center justify-center"
-              onClick={(e) => e.stopPropagation()}
             >
               {/* Main Image Display */}
               <div className="relative w-full h-full flex items-center justify-center">
-                <AnimatePresence mode="wait">
+                <AnimatePresence initial={false} custom={direction} mode="popLayout">
                   <motion.img
                     key={currentIndex}
                     src={currentMedia.url}
                     alt={`${alt} - ${currentIndex + 1}`}
                     className="max-w-full max-h-full object-contain"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.3 }}
+                    custom={direction}
+                    variants={variants}
+                    initial="enter"
+                    animate="center"
+                    exit="exit"
+                    transition={{
+                      x: { type: "spring", stiffness: 300, damping: 30 },
+                      opacity: { duration: 0.2 }
+                    }}
+                    drag="x"
+                    dragConstraints={{ left: 0, right: 0 }}
+                    dragElastic={1}
+                    onDragStart={handleDragStart}
+                    onDragEnd={handleDragEnd}
+                    onClick={(e) => e.stopPropagation()}
                   />
                 </AnimatePresence>
               </div>

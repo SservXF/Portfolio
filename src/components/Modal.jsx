@@ -31,7 +31,11 @@ export default function Modal({ isOpen, onClose, children }) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          onClick={onClose}
+          onClick={(e) => {
+            if (!document.body.hasAttribute('data-carousel-dragging')) {
+              onClose()
+            }
+          }}
           className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[var(--color-overlay)]"
         >
           <motion.div

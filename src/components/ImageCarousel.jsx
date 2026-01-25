@@ -129,22 +129,24 @@ export default function ImageCarousel({
 
   const handleDragStart = () => {
     isDraggingRef.current = true
+    document.body.setAttribute('data-carousel-dragging', 'true')
   }
 
   const handleDragEnd = (e, { offset, velocity }) => {
     const swipe = swipePower(offset.x, velocity.x)
     
-    // Require significant drag distance (at least 30px) or high velocity swipe
-    if (offset.x < -30 || swipe < -swipeConfidenceThreshold) {
+    // Trigger slide on any drag movement or high velocity swipe
+    if (offset.x < -1 || swipe < -swipeConfidenceThreshold) {
       goToNext()
-    } else if (offset.x > 30 || swipe > swipeConfidenceThreshold) {
+    } else if (offset.x > 1 || swipe > swipeConfidenceThreshold) {
       goToPrev()
     }
 
-    // Reset drag flag after a short delay to allow click event to be blocked
+    // Reset drag flag after a longer delay to prevent modal close on drag release
     setTimeout(() => {
       isDraggingRef.current = false
-    }, 100)
+      document.body.removeAttribute('data-carousel-dragging')
+    }, 300)
   }
 
   const handleClick = (e) => {
@@ -282,10 +284,19 @@ export default function ImageCarousel({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-4"
-            onClick={() => setIsFullscreen(false)}
+            onClick={(e) => {
+              if (!isDraggingRef.current) {
+                setIsFullscreen(false)
+              }
+            }}
           >
             <button
-              onClick={() => setIsFullscreen(false)}
+              onClick={(e) => {
+                e.stopPropagation()
+                if (!isDraggingRef.current) {
+                  setIsFullscreen(false)
+                }
+              }}
               className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors z-10"
               aria-label="Close fullscreen"
             >

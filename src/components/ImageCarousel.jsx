@@ -27,13 +27,67 @@ export default function ImageCarousel({
   // If no media or only one item, show simple image
   if (!media || media.length === 0) return null
   if (media.length === 1) {
+    const singleMedia = typeof media[0] === 'string' ? media[0] : media[0].url
+    
     return (
-      <img
-        src={typeof media[0] === 'string' ? media[0] : media[0].url}
-        alt={alt}
-        className={className}
-        draggable="false"
-      />
+      <>
+        <div className="relative w-full h-full group">
+          <img
+            src={singleMedia}
+            alt={alt}
+            className={className}
+            draggable="false"
+          />
+          
+          {/* Fullscreen Button for single image */}
+          {showFullscreenButton && !isFullscreen && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation()
+                setIsFullscreen(true)
+              }}
+              className="absolute bottom-2 right-2 w-8 h-8 rounded-lg bg-black/50 hover:bg-black/70 text-white flex items-center justify-center md:opacity-0 md:group-hover:opacity-100 transition-opacity z-10"
+              aria-label="Fullscreen"
+            >
+              <Maximize2 size={18} />
+            </button>
+          )}
+        </div>
+
+        {/* Fullscreen Modal for single image */}
+        <AnimatePresence>
+          {isFullscreen && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-4"
+              onClick={() => setIsFullscreen(false)}
+            >
+              <button
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setIsFullscreen(false)
+                }}
+                className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors z-10"
+                aria-label="Close fullscreen"
+              >
+                <X size={24} />
+              </button>
+
+              <div className="relative w-full h-full max-w-7xl max-h-[90vh] flex items-center justify-center">
+                <img
+                  src={singleMedia}
+                  alt={alt}
+                  className="max-w-full max-h-full object-contain"
+                  draggable="false"
+                  onClick={(e) => e.stopPropagation()}
+                />
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </>
     )
   }
 

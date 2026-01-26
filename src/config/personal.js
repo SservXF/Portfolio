@@ -60,7 +60,7 @@ export const projects = [
   },
   {
     id: 3,
-    title: 'Project Three',
+    title: 'Hackathon - WeatherMap',
     description: {
       en: 'A third project ',
       fr: 'Un troisième projet',
@@ -69,7 +69,9 @@ export const projects = [
       en: '...',
       fr: '...',
     },
-    image: null,
+    media: [
+      { url: '/projects/weathermap/map.png', duration: 15000 }
+    ],
     technologies: ['Python', 'Django', 'Docker'],
     githubUrl: 'https://github.com/SservXF/project3',
     featured: false,

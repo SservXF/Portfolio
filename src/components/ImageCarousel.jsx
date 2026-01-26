@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
-import { ChevronLeft, ChevronRight, Maximize2, X } from 'lucide-react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { ChevronLeft, ChevronRight, Maximize2 } from 'lucide-react'
+import useEmblaCarousel from 'embla-carousel-react'
+import Lightbox from 'yet-another-react-lightbox'
+import 'yet-another-react-lightbox/styles.css'
 
 export default function ImageCarousel({ 
   media = [], 
@@ -9,444 +11,215 @@ export default function ImageCarousel({
   className = '',
   showFullscreenButton = false
 }) {
+  const [emblaRef, emblaApi] = useEmblaCarousel({ 
+    loop: true, 
+    skipSnaps: false,
+    containScroll: 'trimSnaps',
+    dragFree: false,
+    slidesToScroll: 1
+  })
   const [currentIndex, setCurrentIndex] = useState(0)
+  const [lightboxOpen, setLightboxOpen] = useState(false)
   const [isPaused, setIsPaused] = useState(false)
-  const [isFullscreen, setIsFullscreen] = useState(false)
-  const previousOverflowRef = useRef('')
-  const [direction, setDirection] = useState(0) // -1 for left, 1 for right
-  const [dragConstraints, setDragConstraints] = useState({ left: 0, right: 0 })
   const isDraggingRef = useRef(false)
-  const [displayIndex, setDisplayIndex] = useState(media.length) // Actual position in tripled array
-  const [shouldAnimate, setShouldAnimate] = useState(false)
+  const pointerDownPositionRef = useRef({ x: 0, y: 0 })
 
-  // Enable animation after initial render to prevent slide-in on mount
+  // Convert media to lightbox slides format
+  const lightboxSlides = media.map(item => ({
+    src: typeof item === 'string' ? item : item.url,
+    alt: alt
+  }))
+
+  // Track current slide for Embla
+  const onSelect = useCallback(() => {
+    if (!emblaApi) return
+    setCurrentIndex(emblaApi.selectedScrollSnap())
+  }, [emblaApi])
+
   useEffect(() => {
-    setShouldAnimate(true)
-  }, [])
-
-  // If no media or only one item, show simple image
-  if (!media || media.length === 0) return null
-  if (media.length === 1) {
-    const singleMedia = typeof media[0] === 'string' ? media[0] : media[0].url
+    if (!emblaApi) return
+    onSelect()
+    emblaApi.on('select', onSelect)
+    emblaApi.on('reInit', onSelect)
     
-    return (
-      <>
-        <div className="relative w-full h-full group">
-          <img
-            src={singleMedia}
-            alt={alt}
-            className={className}
-            draggable="false"
-          />
-          
-          {/* Fullscreen Button for single image */}
-          {showFullscreenButton && !isFullscreen && (
-            <button
-              onClick={(e) => {
-                e.stopPropagation()
-                setIsFullscreen(true)
-              }}
-              className="absolute bottom-2 right-2 w-8 h-8 rounded-lg bg-black/50 hover:bg-black/70 text-white flex items-center justify-center md:opacity-0 md:group-hover:opacity-100 transition-opacity z-10"
-              aria-label="Fullscreen"
-            >
-              <Maximize2 size={18} />
-            </button>
-          )}
-        </div>
-
-        {/* Fullscreen Modal for single image */}
-        <AnimatePresence>
-          {isFullscreen && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-4"
-              onClick={() => setIsFullscreen(false)}
-            >
-              <button
-                onClick={(e) => {
-                  e.stopPropagation()
-                  setIsFullscreen(false)
-                }}
-                className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors z-10"
-                aria-label="Close fullscreen"
-              >
-                <X size={24} />
-              </button>
-
-              <div className="relative w-full h-full max-w-7xl max-h-[90vh] flex items-center justify-center">
-                <img
-                  src={singleMedia}
-                  alt={alt}
-                  className="max-w-full max-h-full object-contain"
-                  draggable="false"
-                  onClick={(e) => e.stopPropagation()}
-                />
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </>
-    )
-  }
-
-  const currentMedia = typeof media[currentIndex] === 'string' 
-    ? { url: media[currentIndex], duration: 5000 }
-    : media[currentIndex]
-
-  const goToNext = useCallback(() => {
-    setDirection(1)
-    setDisplayIndex(prev => prev + 1)
-    setCurrentIndex((prev) => (prev + 1) % media.length)
-  }, [media.length])
-
-  const goToPrev = () => {
-    setDirection(-1)
-    setDisplayIndex(prev => prev - 1)
-    setCurrentIndex((prev) => (prev - 1 + media.length) % media.length)
-  }
-
-  const goToSlide = (index) => {
-    setDirection(index > currentIndex ? 1 : -1)
-    const diff = index - currentIndex
-    setDisplayIndex(prev => prev + diff)
-    setCurrentIndex(index)
-  }
-
-  // Reset displayIndex when it wraps too far
-  useEffect(() => {
-    if (displayIndex >= media.length * 2) {
-      // Wrapped forward past the end of middle set - wait for animation, then snap back instantly
-      setTimeout(() => {
-        setShouldAnimate(false)
-        setDisplayIndex(displayIndex - media.length)
-        // Re-enable animation on next frame
-        requestAnimationFrame(() => setShouldAnimate(true))
-      }, 300)
-    } else if (displayIndex < media.length) {
-      // Wrapped backward past the start of middle set - wait for animation, then snap back instantly
-      setTimeout(() => {
-        setShouldAnimate(false)
-        setDisplayIndex(displayIndex + media.length)
-        // Re-enable animation on next frame
-        requestAnimationFrame(() => setShouldAnimate(true))
-      }, 300)
-    }
-  }, [displayIndex, media.length])
-
-  // Auto-play functionality
-  useEffect(() => {
-    if (!autoPlay || isPaused || media.length <= 1 || isFullscreen) return
-
-    const duration = currentMedia.duration || 5000
-    const timer = setTimeout(goToNext, duration)
-
-    return () => clearTimeout(timer)
-  }, [currentIndex, autoPlay, isPaused, media.length, currentMedia.duration, goToNext, isFullscreen])
-
-  // Handle escape key for fullscreen
-  useEffect(() => {
-    const handleEscape = (e) => {
-      if (e.key === 'Escape' && isFullscreen) {
-        setIsFullscreen(false)
-      }
-    }
-    window.addEventListener('keydown', handleEscape)
-    return () => window.removeEventListener('keydown', handleEscape)
-  }, [isFullscreen])
-
-  // Prevent body scroll when fullscreen
-  useEffect(() => {
-    if (isFullscreen) {
-      // Save current overflow state before changing it
-      previousOverflowRef.current = document.body.style.overflow
-      document.body.style.overflow = 'hidden'
-    } else if (previousOverflowRef.current !== null) {
-      // Restore previous overflow state only when closing fullscreen
-      document.body.style.overflow = previousOverflowRef.current
-    }
-    
-    // Cleanup on unmount
-    return () => {
-      if (isFullscreen && previousOverflowRef.current !== null) {
-        document.body.style.overflow = previousOverflowRef.current
-      }
-    }
-  }, [isFullscreen])
-
-  // Swipe detection
-  const swipeConfidenceThreshold = 10000
-  const swipePower = (offset, velocity) => {
-    return Math.abs(offset) * velocity
-  }
-
-  const handleDragStart = () => {
-    isDraggingRef.current = true
-    document.body.setAttribute('data-carousel-dragging', 'true')
-  }
-
-  const handleDragEnd = (e, { offset, velocity }) => {
-    const swipe = swipePower(offset.x, velocity.x)
-    
-    // Trigger slide on any drag movement or high velocity swipe
-    if (offset.x < -1 || swipe < -swipeConfidenceThreshold) {
-      goToNext()
-    } else if (offset.x > 1 || swipe > swipeConfidenceThreshold) {
-      goToPrev()
-    }
-
-    // Reset drag flag after a longer delay to prevent modal close on drag release
-    setTimeout(() => {
+    // Track drag events to prevent click on drag
+    const onPointerDown = (event) => {
       isDraggingRef.current = false
       document.body.removeAttribute('data-carousel-dragging')
-    }, 300)
-  }
-
-  const handleClick = (e) => {
-    if (isDraggingRef.current) {
-      e.stopPropagation()
-      e.preventDefault()
-    }
-  }
-
-  const variants = {
-    enter: (direction) => {
-      return {
-        x: direction > 0 ? 300 : -300,
-        opacity: 0
-      }
-    },
-    center: {
-      zIndex: 1,
-      x: 0,
-      opacity: 1
-    },
-    exit: (direction) => {
-      return {
-        zIndex: 0,
-        x: direction < 0 ? 300 : -300,
-        opacity: 0
+      // Store initial position
+      pointerDownPositionRef.current = {
+        x: event.clientX || 0,
+        y: event.clientY || 0
       }
     }
-  }
+    
+    const onPointerMove = (event) => {
+      // Only track if pointer started on carousel
+      if (pointerDownPositionRef.current.x === 0 && pointerDownPositionRef.current.y === 0) return
+      
+      // Only consider it dragging if moved more than 5 pixels
+      const deltaX = Math.abs((event.clientX || 0) - pointerDownPositionRef.current.x)
+      const deltaY = Math.abs((event.clientY || 0) - pointerDownPositionRef.current.y)
+      
+      if (deltaX > 5 || deltaY > 5) {
+        isDraggingRef.current = true
+        document.body.setAttribute('data-carousel-dragging', 'true')
+      }
+    }
+    
+    const onPointerUp = () => {
+      // Reset position tracking
+      pointerDownPositionRef.current = { x: 0, y: 0 }
+      
+      setTimeout(() => {
+        isDraggingRef.current = false
+        document.body.removeAttribute('data-carousel-dragging')
+      }, 50)
+    }
+    
+    const container = emblaApi.rootNode()
+    container.addEventListener('pointerdown', onPointerDown)
+    container.addEventListener('pointermove', onPointerMove)
+    container.addEventListener('pointerup', onPointerUp)
+    
+    // Global pointerup listener to ensure cleanup even if released outside carousel
+    window.addEventListener('pointerup', onPointerUp)
+    
+    return () => {
+      emblaApi.off('select', onSelect)
+      emblaApi.off('reInit', onSelect)
+      container.removeEventListener('pointerdown', onPointerDown)
+      container.removeEventListener('pointermove', onPointerMove)
+      container.removeEventListener('pointerup', onPointerUp)
+      window.removeEventListener('pointerup', onPointerUp)
+    }
+  }, [emblaApi, onSelect])
 
-  const carousel = (
-    <div 
-      className="relative w-full h-full group"
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
-      onClick={handleClick}
-    >
-      {/* Main Image Display */}
-      <div className="relative w-full h-full overflow-hidden">
-        <motion.div
-          className="flex h-full"
-          animate={{ x: `-${displayIndex * 100}%` }}
-          transition={shouldAnimate ? { type: "tween", duration: 0.3, ease: "easeOut" } : { duration: 0 }}
-          drag="x"
-          dragElastic={0.7}
-          onDragStart={handleDragStart}
-          onDragEnd={handleDragEnd}
-        >
-          {/* Render images three times for infinite wrapping */}
-          {[...media, ...media, ...media].map((item, index) => (
-            <div key={index} className="min-w-full h-full flex-shrink-0">
-              <img
-                src={typeof item === 'string' ? item : item.url}
-                alt={`${alt} - ${(index % media.length) + 1}`}
-                className={className}
-                draggable="false"
-              />
-            </div>
-          ))}
-        </motion.div>
-      </div>
+  // Auto-play functionality - resets on any slide change
+  useEffect(() => {
+    if (!autoPlay || !emblaApi || media.length <= 1 || isPaused || lightboxOpen) return
 
-      {/* Navigation Arrows - Always visible on mobile */}
-      <button
-        onClick={(e) => {
-          e.stopPropagation()
-          goToPrev()
-        }}
-        className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/50 hover:bg-black/70 text-white flex items-center justify-center md:opacity-0 md:group-hover:opacity-100 transition-opacity z-10"
-        aria-label="Previous image"
-      >
-        <ChevronLeft size={20} />
-      </button>
+    const autoplayInterval = setInterval(() => {
+      emblaApi.scrollNext()
+    }, 5000)
 
-      <button
-        onClick={(e) => {
-          e.stopPropagation()
-          goToNext()
-        }}
-        className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/50 hover:bg-black/70 text-white flex items-center justify-center md:opacity-0 md:group-hover:opacity-100 transition-opacity z-10"
-        aria-label="Next image"
-      >
-        <ChevronRight size={20} />
-      </button>
+    return () => clearInterval(autoplayInterval)
+  }, [emblaApi, autoPlay, media.length, isPaused, currentIndex, lightboxOpen]) // Added lightboxOpen to disable autoplay in fullscreen
 
-      {/* Dots Indicator */}
-      <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
-        {media.map((_, index) => (
-          <button
-            key={index}
-            onClick={(e) => {
-              e.stopPropagation()
-              goToSlide(index)
-            }}
-            className={`h-2 rounded-full transition-all border border-white/30 ${
-              index === currentIndex
-                ? 'bg-white w-6 shadow-lg'
-                : 'bg-white/60 hover:bg-white/90 w-2 shadow-md'
-            }`}
-            style={{
-              boxShadow: index === currentIndex 
-                ? '0 0 8px rgba(0, 0, 0, 0.5), 0 0 2px rgba(255, 255, 255, 0.8)' 
-                : '0 0 4px rgba(0, 0, 0, 0.4)'
-            }}
-            aria-label={`Go to image ${index + 1}`}
-          />
-        ))}
-      </div>
+  // Navigation functions
+  const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi])
+  const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi])
+  const scrollTo = useCallback((index) => emblaApi?.scrollTo(index), [emblaApi])
 
-      {/* Fullscreen Button */}
-      {showFullscreenButton && !isFullscreen && (
-        <button
-          onClick={(e) => {
-            e.stopPropagation()
-            setIsFullscreen(true)
-          }}
-          className="absolute bottom-2 right-2 w-8 h-8 rounded-lg bg-black/50 hover:bg-black/70 text-white flex items-center justify-center md:opacity-0 md:group-hover:opacity-100 transition-opacity z-10"
-          aria-label="Fullscreen"
-        >
-          <Maximize2 size={18} />
-        </button>
-      )}
-    </div>
-  )
+  if (!media || media.length === 0) return null
 
   return (
     <>
-      {carousel}
-      
-      {/* Fullscreen Modal */}
-      <AnimatePresence>
-        {isFullscreen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-4"
-            onClick={(e) => {
-              if (!isDraggingRef.current) {
-                setIsFullscreen(false)
-              }
-            }}
-          >
+      <div 
+        className="relative w-full h-full group"
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+      >
+        {/* Embla Carousel */}
+        <div className="overflow-hidden h-full w-full" ref={emblaRef}>
+          <div className="flex h-full gap-0" style={{ touchAction: 'pan-y', margin: 0 }}>
+            {media.map((item, index) => (
+              <div key={index} className="flex-[0_0_100%] min-w-0 h-full overflow-hidden" style={{ margin: 0, padding: 0 }}>
+                <img
+                  src={typeof item === 'string' ? item : item.url}
+                  alt={`${alt} - ${index + 1}`}
+                  className={className}
+                  draggable="false"
+                  style={{ 
+                    display: 'block',
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    transform: 'scale(1.05)',
+                    backfaceVisibility: 'hidden',
+                    margin: 0,
+                    padding: 0
+                  }}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Navigation Arrows - Only show if multiple images */}
+        {media.length > 1 && (
+          <>
             <button
               onClick={(e) => {
                 e.stopPropagation()
-                if (!isDraggingRef.current) {
-                  setIsFullscreen(false)
-                }
+                scrollPrev()
               }}
-              className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors z-10"
-              aria-label="Close fullscreen"
+              className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/50 hover:bg-black/70 text-white flex items-center justify-center md:opacity-0 md:group-hover:opacity-100 transition-opacity z-10"
+              aria-label="Previous image"
             >
-              <X size={24} />
+              <ChevronLeft size={20} />
             </button>
 
-            <div 
-              className="relative w-full h-full max-w-7xl max-h-[90vh] flex items-center justify-center"
+            <button
+              onClick={(e) => {
+                e.stopPropagation()
+                scrollNext()
+              }}
+              className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/50 hover:bg-black/70 text-white flex items-center justify-center md:opacity-0 md:group-hover:opacity-100 transition-opacity z-10"
+              aria-label="Next image"
             >
-              {/* Main Image Display */}
-              <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
-                {media.map((item, index) => {
-                  // Calculate position with wrapping for smooth animation
-                  let offset = index - currentIndex
-                  if (offset > media.length / 2) {
-                    offset -= media.length
-                  } else if (offset < -media.length / 2) {
-                    offset += media.length
-                  }
+              <ChevronRight size={20} />
+            </button>
 
-                  return (
-                    <motion.div
-                      key={index}
-                      className="absolute inset-0 flex items-center justify-center"
-                      initial={false}
-                      animate={{
-                        x: `${offset * 100}%`,
-                        opacity: index === currentIndex ? 1 : 0
-                      }}
-                      transition={{ type: "tween", duration: 0.3, ease: "easeOut" }}
-                      drag="x"
-                      dragElastic={0.7}
-                      onDragStart={handleDragStart}
-                      onDragEnd={handleDragEnd}
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <img
-                        src={typeof item === 'string' ? item : item.url}
-                        alt={`${alt} - ${index + 1}`}
-                        className="max-w-full max-h-full object-contain"
-                        draggable="false"
-                      />
-                    </motion.div>
-                  )
-                })}
-              </div>
-
-              {/* Navigation Arrows in Fullscreen */}
-              {media.length > 1 && (
-                <>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      goToPrev()
-                    }}
-                    className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors"
-                    aria-label="Previous image"
-                  >
-                    <ChevronLeft size={28} />
-                  </button>
-
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      goToNext()
-                    }}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors"
-                    aria-label="Next image"
-                  >
-                    <ChevronRight size={28} />
-                  </button>
-
-                  {/* Dots in Fullscreen */}
-                  <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2">
-                    {media.map((_, index) => (
-                      <button
-                        key={index}
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          goToSlide(index)
-                        }}
-                        className={`h-2.5 rounded-full transition-all border border-white/50 ${
-                          index === currentIndex
-                            ? 'bg-white w-8'
-                            : 'bg-white/40 hover:bg-white/60 w-2.5'
-                        }`}
-                        aria-label={`Go to image ${index + 1}`}
-                      />
-                    ))}
-                  </div>
-                </>
-              )}
+            {/* Dots Indicator */}
+            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
+              {media.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    scrollTo(index)
+                  }}
+                  className={`h-2 rounded-full transition-all border border-white/30 ${
+                    index === currentIndex
+                      ? 'bg-white w-6 shadow-lg'
+                      : 'bg-white/60 hover:bg-white/90 w-2 shadow-md'
+                  }`}
+                  style={{
+                    boxShadow: index === currentIndex 
+                      ? '0 0 8px rgba(0, 0, 0, 0.5), 0 0 2px rgba(255, 255, 255, 0.8)' 
+                      : '0 0 4px rgba(0, 0, 0, 0.4)'
+                  }}
+                  aria-label={`Go to image ${index + 1}`}
+                />
+              ))}
             </div>
-          </motion.div>
+          </>
         )}
-      </AnimatePresence>
+
+        {/* Fullscreen Button */}
+        {showFullscreenButton && (
+          <button
+            onClick={(e) => {
+              e.stopPropagation()
+              setLightboxOpen(true)
+            }}
+            className="absolute bottom-2 right-2 w-8 h-8 rounded-lg bg-black/50 hover:bg-black/70 text-white flex items-center justify-center md:opacity-0 md:group-hover:opacity-100 transition-opacity z-10"
+            aria-label="Fullscreen"
+          >
+            <Maximize2 size={18} />
+          </button>
+        )}
+      </div>
+
+      {/* Fullscreen Lightbox */}
+      <Lightbox
+        open={lightboxOpen}
+        close={() => setLightboxOpen(false)}
+        slides={lightboxSlides}
+        index={currentIndex}
+        styles={{ container: { backgroundColor: 'rgba(0, 0, 0, 0.95)' } }}
+      />
     </>
   )
 }

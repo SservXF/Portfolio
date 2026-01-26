@@ -15,7 +15,12 @@ export default function ProjectCard({ project, onClick, index }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: index * 0.1 }}
-      onClick={onClick}
+      onClick={(e) => {
+        // Don't open modal if user was dragging carousel
+        if (!document.body.hasAttribute('data-carousel-dragging')) {
+          onClick()
+        }
+      }}
       className="group cursor-pointer bg-[var(--color-card)] rounded-2xl overflow-hidden border border-[var(--color-border)] hover:border-[var(--color-primary)] transition-all duration-300 hover:shadow-xl"
     >
       {/* Project Image/Carousel */}

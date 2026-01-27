@@ -99,7 +99,7 @@ export const projects = [
     githubUrl: 'https://github.com/SservXF/Pokepong.git',
     featured: false,
   },
-      {
+  {
     id: 5,
     title: 'Site de fidélité',
     description: {
@@ -115,6 +115,26 @@ export const projects = [
       { url: '/projects/fidelite/panier.png', duration: 5000 }
     ],
     technologies: ['HTML', 'CSS', 'JavaScript', 'PostgreSQL', 'Node.js', 'Express', 'Bootstrap'],
+    githubUrl: 'https://github.com/SservXF/Website-Cartes-Fidelite.git',
+    featured: false,
+  },
+    {
+    id: 6,
+    title: 'HydrogeneGPS',
+    description: {
+      en: '...',
+      fr: '...',
+    },
+    longDescription: {
+      en: '...',
+      fr: '...',
+    },
+    media: [
+      { url: '/projects/hydrogeneGPS/trajet.gif', duration: 12000 },
+      { url: '/projects/hydrogeneGPS/eviter.png', duration: 3000 },
+      { url: '/projects/hydrogeneGPS/lignes.gif', duration: 8000 }
+    ],
+    technologies: ['React', 'Java', 'Springboot', 'Maven', 'Docker', 'Leaflet', 'API IDF Mobilités', 'OpenStreetMap'],
     githubUrl: 'https://github.com/SservXF/Website-Cartes-Fidelite.git',
     featured: false,
   },

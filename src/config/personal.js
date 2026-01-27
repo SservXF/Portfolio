@@ -51,8 +51,8 @@ export const projects = [
       fr: 'Explication détaillée du projet',
     },
     media: [
-      { url: '/projects/bomberman/bomberman1.gif', duration: 15000 },
-      { url: '/projects/bomberman/bomberman2.gif', duration: 15000 }
+      { url: '/projects/bomberman/bomberman1.gif', duration: 8000 },
+      { url: '/projects/bomberman/bomberman2.gif', duration: 8000 }
     ],
     technologies: ['C', 'NCurses'],
     githubUrl: 'https://github.com/SservXF/Bomberman-C.git',
@@ -70,10 +70,33 @@ export const projects = [
       fr: '...',
     },
     media: [
-      { url: '/projects/weathermap/map.png', duration: 15000 }
+      { url: '/projects/weathermap/map.png'}
     ],
     technologies: ['Java', 'Spring Boot', 'React', 'Leaflet', 'OpenWeatherMap API'],
     githubUrl: 'https://github.com/SservXF/WeatherMap.git',
+    featured: false,
+  },
+    {
+    id: 4,
+    title: 'Poképong',
+    description: {
+      en: '...',
+      fr: '...',
+    },
+    longDescription: {
+      en: '...',
+      fr: '...',
+    },
+    media: [
+      { url: '/projects/pokepong/menus.gif', duration: 15000 },
+      { url: '/projects/pokepong/jaune.gif', duration: 8000 },
+      { url: '/projects/pokepong/rouge.gif', duration: 8000 },
+      { url: '/projects/pokepong/vert.gif', duration: 8000 },
+      { url: '/projects/pokepong/bleu.gif', duration: 8000 },
+      { url: '/projects/pokepong/settings.png', duration: 3000 }
+    ],
+    technologies: ['Java', 'JavaFX', 'Gradle'],
+    githubUrl: 'https://github.com/SservXF/Pokepong.git',
     featured: false,
   },
 ]

@@ -25,12 +25,37 @@ export default function ImageCarousel({
   const [isPaused, setIsPaused] = useState(false)
   const isDraggingRef = useRef(false)
   const pointerDownPositionRef = useRef({ x: 0, y: 0 })
+  const containerRef = useRef(null)
+  const [carouselWidth, setCarouselWidth] = useState(null)
+  const [showControls, setShowControls] = useState(false)
 
   // Convert media to lightbox slides format
   const lightboxSlides = media.map(item => ({
     src: typeof item === 'string' ? item : item.url,
     alt: alt
   }))
+
+  // Fix for 1px gap issue: force whole pixel width
+  useEffect(() => {
+    const updateCarouselWidth = () => {
+      if (containerRef.current) {
+        const width = containerRef.current.clientWidth
+        setCarouselWidth(width)
+      }
+    }
+
+    updateCarouselWidth()
+    window.addEventListener('resize', updateCarouselWidth)
+    
+    return () => window.removeEventListener('resize', updateCarouselWidth)
+  }, [])
+
+  // Reinit Embla when width changes
+  useEffect(() => {
+    if (emblaApi && carouselWidth !== null) {
+      emblaApi.reInit()
+    }
+  }, [emblaApi, carouselWidth])
 
   // Track current slide for Embla
   const onSelect = useCallback(() => {
@@ -118,15 +143,26 @@ export default function ImageCarousel({
   return (
     <>
       <div 
+        ref={containerRef}
         className="relative w-full h-full group"
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
+        onClick={(e) => {
+          // Toggle controls on mobile when tapping the carousel (but not the buttons)
+          if (e.target.tagName === 'IMG' || e.target === e.currentTarget) {
+            setShowControls(prev => !prev)
+          }
+        }}
       >
         {/* Embla Carousel */}
-        <div className="overflow-hidden h-full w-full" ref={emblaRef}>
-          <div className="flex h-full gap-0" style={{ touchAction: 'pan-y', margin: 0 }}>
+        <div 
+          className="overflow-hidden h-full" 
+          ref={emblaRef}
+          style={{ width: carouselWidth !== null ? `${carouselWidth}px` : '100%' }}
+        >
+          <div className="flex h-full" style={{ touchAction: 'pan-y' }}>
             {media.map((item, index) => (
-              <div key={index} className="flex-[0_0_100%] min-w-0 h-full overflow-hidden" style={{ margin: 0, padding: 0, marginRight: '1px' }}>
+              <div key={index} className="flex-[0_0_100%] min-w-0 h-full">
                 <img
                   src={typeof item === 'string' ? item : item.url}
                   alt={`${alt} - ${index + 1}`}
@@ -136,10 +172,7 @@ export default function ImageCarousel({
                     display: 'block',
                     width: '100%',
                     height: '100%',
-                    objectFit: 'cover',
-                    backfaceVisibility: 'hidden',
-                    margin: 0,
-                    padding: 0
+                    objectFit: 'cover'
                   }}
                 />
               </div>

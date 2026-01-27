@@ -2,7 +2,9 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 import { ChevronLeft, ChevronRight, Maximize2 } from 'lucide-react'
 import useEmblaCarousel from 'embla-carousel-react'
 import Lightbox from 'yet-another-react-lightbox'
+import Counter from 'yet-another-react-lightbox/plugins/counter'
 import 'yet-another-react-lightbox/styles.css'
+import 'yet-another-react-lightbox/plugins/counter.css'
 
 export default function ImageCarousel({ 
   media = [], 
@@ -104,7 +106,7 @@ export default function ImageCarousel({
     }, 5000)
 
     return () => clearInterval(autoplayInterval)
-  }, [emblaApi, autoPlay, media.length, isPaused, currentIndex, lightboxOpen]) // Added lightboxOpen to disable autoplay in fullscreen
+  }, [emblaApi, autoPlay, media.length, isPaused, currentIndex, lightboxOpen])
 
   // Navigation functions
   const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi])
@@ -217,6 +219,8 @@ export default function ImageCarousel({
         close={() => setLightboxOpen(false)}
         slides={lightboxSlides}
         index={currentIndex}
+        plugins={[Counter]}
+        counter={{ container: { style: { top: 'unset', bottom: '16px' } } }}
         styles={{ container: { backgroundColor: 'rgba(0, 0, 0, 0.95)' } }}
       />
     </>

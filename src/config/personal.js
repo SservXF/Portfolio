@@ -41,7 +41,7 @@ export const projects = [
   },
   {
     id: 2,
-    title: 'Bomberman - C language',
+    title: 'Bomberman',
     description: {
       en: 'Another amazing project',
       fr: 'Un autre projet incroyable',
@@ -54,7 +54,7 @@ export const projects = [
       { url: '/projects/bomberman/bomberman1.gif', duration: 8000 },
       { url: '/projects/bomberman/bomberman2.gif', duration: 8000 }
     ],
-    technologies: ['C', 'NCurses'],
+    technologies: ['C Language', 'NCurses'],
     githubUrl: 'https://github.com/SservXF/Bomberman-C.git',
     featured: true,
   },
@@ -97,6 +97,25 @@ export const projects = [
     ],
     technologies: ['Java', 'JavaFX', 'Gradle'],
     githubUrl: 'https://github.com/SservXF/Pokepong.git',
+    featured: false,
+  },
+      {
+    id: 5,
+    title: 'Site de fidélité',
+    description: {
+      en: '...',
+      fr: '...',
+    },
+    longDescription: {
+      en: '...',
+      fr: '...',
+    },
+    media: [
+      { url: '/projects/fidelite/shop.png', duration: 5000 },
+      { url: '/projects/fidelite/panier.png', duration: 5000 }
+    ],
+    technologies: ['HTML', 'CSS', 'JavaScript', 'PostgreSQL', 'Node.js', 'Express', 'Bootstrap'],
+    githubUrl: 'https://github.com/SservXF/Website-Cartes-Fidelite.git',
     featured: false,
   },
 ]

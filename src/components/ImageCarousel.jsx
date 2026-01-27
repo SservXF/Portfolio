@@ -124,7 +124,7 @@ export default function ImageCarousel({
         <div className="overflow-hidden h-full w-full" ref={emblaRef}>
           <div className="flex h-full gap-0" style={{ touchAction: 'pan-y', margin: 0 }}>
             {media.map((item, index) => (
-              <div key={index} className="flex-[0_0_100%] min-w-0 h-full overflow-hidden" style={{ margin: 0, padding: 0 }}>
+              <div key={index} className="flex-[0_0_100%] min-w-0 h-full overflow-hidden" style={{ margin: 0, padding: 0, marginRight: '1px' }}>
                 <img
                   src={typeof item === 'string' ? item : item.url}
                   alt={`${alt} - ${index + 1}`}
@@ -135,7 +135,6 @@ export default function ImageCarousel({
                     width: '100%',
                     height: '100%',
                     objectFit: 'cover',
-                    transform: 'scale(1.05)',
                     backfaceVisibility: 'hidden',
                     margin: 0,
                     padding: 0

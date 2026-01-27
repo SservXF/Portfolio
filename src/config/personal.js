@@ -72,8 +72,8 @@ export const projects = [
     media: [
       { url: '/projects/weathermap/map.png', duration: 15000 }
     ],
-    technologies: ['Python', 'Django', 'Docker'],
-    githubUrl: 'https://github.com/SservXF/project3',
+    technologies: ['Java', 'Spring Boot', 'React', 'Leaflet', 'OpenWeatherMap API'],
+    githubUrl: 'https://github.com/SservXF/WeatherMap.git',
     featured: false,
   },
 ]

@@ -118,7 +118,7 @@ export const projects = [
     githubUrl: 'https://github.com/SservXF/Website-Cartes-Fidelite.git',
     featured: false,
   },
-    {
+  {
     id: 6,
     title: 'HydrogeneGPS',
     description: {
@@ -136,6 +136,44 @@ export const projects = [
     ],
     technologies: ['React', 'Java', 'Springboot', 'Maven', 'Docker', 'Leaflet', 'API IDF Mobilités', 'OpenStreetMap'],
     githubUrl: 'https://github.com/SservXF/Website-Cartes-Fidelite.git',
+    featured: false,
+  },
+  {
+    id: 7,
+    title: 'Tetris',
+    description: {
+      en: '...',
+      fr: '...',
+    },
+    longDescription: {
+      en: '...',
+      fr: '...',
+    },
+    media: [
+      { url: '/projects/tetris/tetris.gif', duration: 15000 }
+    ],
+    technologies: ['Java', 'Java Swing'],
+    githubUrl: 'https://github.com/SservXF/Tetris.git',
+    featured: false,
+  },
+  {
+    id: 8,
+    title: 'PieceOut',
+    description: {
+      en: '...',
+      fr: '...',
+    },
+    longDescription: {
+      en: '...',
+      fr: '...',
+    },
+    media: [
+      { url: '/projects/pieceout/pieceout1.gif', duration: 8000 },
+      { url: '/projects/pieceout/pieceout2.gif', duration: 8000 },
+      { url: '/projects/pieceout/pieceout3.gif', duration: 8000 }
+    ],
+    technologies: ['C++', 'SFML'],
+    githubUrl: 'https://github.com/SservXF/PieceOut.git',
     featured: false,
   },
 ]

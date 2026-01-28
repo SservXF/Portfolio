@@ -3,6 +3,7 @@ import { ChevronLeft, ChevronRight, Maximize2 } from 'lucide-react'
 import useEmblaCarousel from 'embla-carousel-react'
 import Lightbox from 'yet-another-react-lightbox'
 import Counter from 'yet-another-react-lightbox/plugins/counter'
+import Video from 'yet-another-react-lightbox/plugins/video'
 import 'yet-another-react-lightbox/styles.css'
 import 'yet-another-react-lightbox/plugins/counter.css'
 
@@ -28,12 +29,30 @@ export default function ImageCarousel({
   const containerRef = useRef(null)
   const [carouselWidth, setCarouselWidth] = useState(null)
   const [showControls, setShowControls] = useState(false)
+  const videoRefs = useRef({})
 
   // Convert media to lightbox slides format
-  const lightboxSlides = media.map(item => ({
-    src: typeof item === 'string' ? item : item.url,
-    alt: alt
-  }))
+  const lightboxSlides = media.map(item => {
+    const url = typeof item === 'string' ? item : item.url
+    const isVideo = url.endsWith('.mp4') || url.endsWith('.webm')
+    
+    if (isVideo) {
+      return {
+        type: 'video',
+        sources: [
+          {
+            src: url,
+            type: url.endsWith('.webm') ? 'video/webm' : 'video/mp4'
+          }
+        ]
+      }
+    }
+    
+    return {
+      src: url,
+      alt: alt
+    }
+  })
 
   // Fix for 1px gap issue: force whole pixel width
   useEffect(() => {
@@ -60,7 +79,21 @@ export default function ImageCarousel({
   // Track current slide for Embla
   const onSelect = useCallback(() => {
     if (!emblaApi) return
-    setCurrentIndex(emblaApi.selectedScrollSnap())
+    const newIndex = emblaApi.selectedScrollSnap()
+    setCurrentIndex(newIndex)
+    
+    // Play/pause videos based on current slide
+    Object.keys(videoRefs.current).forEach((key) => {
+      const video = videoRefs.current[key]
+      if (video) {
+        if (parseInt(key) === newIndex) {
+          video.currentTime = 0 // Reset to start
+          video.play().catch(() => {}) // Play current video
+        } else {
+          video.pause() // Pause other videos
+        }
+      }
+    })
   }, [emblaApi])
 
   useEffect(() => {
@@ -161,22 +194,72 @@ export default function ImageCarousel({
           style={{ width: carouselWidth !== null ? `${carouselWidth}px` : '100%' }}
         >
           <div className="flex h-full" style={{ touchAction: 'pan-y' }}>
-            {media.map((item, index) => (
-              <div key={index} className="flex-[0_0_100%] min-w-0 h-full">
-                <img
-                  src={typeof item === 'string' ? item : item.url}
-                  alt={`${alt} - ${index + 1}`}
-                  className={className}
-                  draggable="false"
-                  style={{ 
-                    display: 'block',
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover'
-                  }}
-                />
-              </div>
-            ))}
+            {media.map((item, index) => {
+              // Load current slide and adjacent slides for smooth dragging
+              const isCurrentSlide = index === currentIndex
+              const isAdjacentSlide = Math.abs(index - currentIndex) === 1
+              const isLastToFirst = currentIndex === 0 && index === media.length - 1
+              const isFirstToLast = currentIndex === media.length - 1 && index === 0
+              const shouldLoad = isCurrentSlide || isAdjacentSlide || isLastToFirst || isFirstToLast
+              
+              const mediaUrl = typeof item === 'string' ? item : item.url
+              const isVideo = mediaUrl.endsWith('.mp4') || mediaUrl.endsWith('.webm')
+              
+              return (
+                <div key={index} className="flex-[0_0_100%] min-w-0 h-full">
+                  {shouldLoad ? (
+                    isVideo ? (
+                      <video
+                        ref={(el) => {
+                          if (el) {
+                            videoRefs.current[index] = el
+                          }
+                        }}
+                        key={`video-${index}`}
+                        loop
+                        muted
+                        playsInline
+                        className={className}
+                        draggable="false"
+                        style={{ 
+                          display: 'block',
+                          width: '100%',
+                          height: '100%',
+                          objectFit: 'cover'
+                        }}
+                      >
+                        <source src={mediaUrl} type={`video/${mediaUrl.endsWith('.webm') ? 'webm' : 'mp4'}`} />
+                      </video>
+                    ) : (
+                      <img
+                        key={`img-${index}`}
+                        src={mediaUrl}
+                        alt={`${alt} - ${index + 1}`}
+                        className={className}
+                        draggable="false"
+                        style={{ 
+                          display: 'block',
+                          width: '100%',
+                          height: '100%',
+                          objectFit: 'cover'
+                        }}
+                      />
+                    )
+                  ) : (
+                    // Placeholder to maintain layout
+                    <div 
+                      className={className}
+                      style={{ 
+                        display: 'block',
+                        width: '100%',
+                        height: '100%',
+                        backgroundColor: 'var(--color-background-tertiary)'
+                      }}
+                    />
+                  )}
+                </div>
+              )
+            })}
           </div>
         </div>
 
@@ -252,9 +335,10 @@ export default function ImageCarousel({
         close={() => setLightboxOpen(false)}
         slides={lightboxSlides}
         index={currentIndex}
-        plugins={[Counter]}
+        plugins={[Counter, Video]}
         counter={{ container: { style: { top: 'unset', bottom: '16px' } } }}
         styles={{ container: { backgroundColor: 'rgba(0, 0, 0, 0.95)' } }}
+        video={{ autoPlay: true, controls: true }}
       />
     </>
   )

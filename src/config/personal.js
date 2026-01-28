@@ -30,9 +30,9 @@ export const projects = [
       fr: "Une description plus détaillée",
     },
     media: [
-      { url: '/projects/slitherio/slitherio1.gif', duration: 8000 }, // GIF - 8 seconds
+      { url: '/projects/slitherio/slitherio1.webm', duration: 8000 }, // webm - 8 seconds
       { url: '/projects/slitherio/snakeSelection.png', duration: 3000 }, // Image - 3 seconds
-      { url: '/projects/slitherio/snake1.gif', duration: 8000 },
+      { url: '/projects/slitherio/snake1.webm', duration: 8000 },
     ],
     technologies: ['Java', 'JavaFX', 'Gradle'],
     githubUrl: 'https://github.com/SservXF/POO-Slither.io.git',
@@ -51,8 +51,8 @@ export const projects = [
       fr: 'Explication détaillée du projet',
     },
     media: [
-      { url: '/projects/bomberman/bomberman1.gif', duration: 8000 },
-      { url: '/projects/bomberman/bomberman2.gif', duration: 8000 }
+      { url: '/projects/bomberman/bomberman1.webm', duration: 8000 },
+      { url: '/projects/bomberman/bomberman2.webm', duration: 8000 }
     ],
     technologies: ['C Language', 'NCurses'],
     githubUrl: 'https://github.com/SservXF/Bomberman-C.git',
@@ -88,11 +88,11 @@ export const projects = [
       fr: '...',
     },
     media: [
-      { url: '/projects/pokepong/menus.gif', duration: 15000 },
-      { url: '/projects/pokepong/jaune.gif', duration: 8000 },
-      { url: '/projects/pokepong/rouge.gif', duration: 8000 },
-      { url: '/projects/pokepong/vert.gif', duration: 8000 },
-      { url: '/projects/pokepong/bleu.gif', duration: 8000 },
+      { url: '/projects/pokepong/menus.webm', duration: 15000 },
+      { url: '/projects/pokepong/jaune.webm', duration: 8000 },
+      { url: '/projects/pokepong/rouge.webm', duration: 8000 },
+      { url: '/projects/pokepong/vert.webm', duration: 8000 },
+      { url: '/projects/pokepong/bleu.webm', duration: 8000 },
       { url: '/projects/pokepong/settings.png', duration: 3000 }
     ],
     technologies: ['Java', 'JavaFX', 'Gradle'],
@@ -130,9 +130,9 @@ export const projects = [
       fr: '...',
     },
     media: [
-      { url: '/projects/hydrogeneGPS/trajet.gif', duration: 12000 },
+      { url: '/projects/hydrogeneGPS/trajet.webm', duration: 12000 },
       { url: '/projects/hydrogeneGPS/eviter.png', duration: 3000 },
-      { url: '/projects/hydrogeneGPS/lignes.gif', duration: 8000 }
+      { url: '/projects/hydrogeneGPS/lignes.webm', duration: 8000 }
     ],
     technologies: ['React', 'Java', 'Springboot', 'Maven', 'Docker', 'Leaflet', 'API IDF Mobilités', 'OpenStreetMap'],
     githubUrl: 'https://github.com/SservXF/Website-Cartes-Fidelite.git',
@@ -150,7 +150,7 @@ export const projects = [
       fr: '...',
     },
     media: [
-      { url: '/projects/tetris/tetris.gif', duration: 15000 }
+      { url: '/projects/tetris/tetris.webm', duration: 15000 }
     ],
     technologies: ['Java', 'Java Swing'],
     githubUrl: 'https://github.com/SservXF/Tetris.git',
@@ -168,9 +168,9 @@ export const projects = [
       fr: '...',
     },
     media: [
-      { url: '/projects/pieceout/pieceout1.gif', duration: 8000 },
-      { url: '/projects/pieceout/pieceout2.gif', duration: 8000 },
-      { url: '/projects/pieceout/pieceout3.gif', duration: 8000 }
+      { url: '/projects/pieceout/pieceout1.webm', duration: 8000 },
+      { url: '/projects/pieceout/pieceout2.webm', duration: 8000 },
+      { url: '/projects/pieceout/pieceout3.webm', duration: 8000 }
     ],
     technologies: ['C++', 'SFML'],
     githubUrl: 'https://github.com/SservXF/PieceOut.git',

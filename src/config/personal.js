@@ -18,8 +18,65 @@ export const personalInfo = {
 // PROJECTS
 // ============================================
 export const projects = [
-  {
+    {
     id: 1,
+    title: 'HydrogeneGPS',
+    description: {
+      en: '...',
+      fr: '...',
+    },
+    longDescription: {
+      en: '...',
+      fr: '...',
+    },
+    media: [
+      { url: '/projects/hydrogeneGPS/trajet.webm', duration: 12000 },
+      { url: '/projects/hydrogeneGPS/eviter.png', duration: 3000 },
+      { url: '/projects/hydrogeneGPS/lignes.webm', duration: 8000 }
+    ],
+    technologies: ['React', 'Java', 'Springboot', 'Maven', 'Docker', 'Leaflet', 'API IDF Mobilités', 'OpenStreetMap'],
+    githubUrl: 'https://github.com/SservXF/Website-Cartes-Fidelite.git',
+    featured: false,
+  },
+  {
+    id: 2,
+    title: 'Hackathon - WeatherMap',
+    description: {
+      en: 'A third project ',
+      fr: 'Un troisième projet',
+    },
+    longDescription: {
+      en: '...',
+      fr: '...',
+    },
+    media: [
+      { url: '/projects/weathermap/map.png'}
+    ],
+    technologies: ['Java', 'Spring Boot', 'React', 'Leaflet', 'OpenWeatherMap API'],
+    githubUrl: 'https://github.com/SservXF/WeatherMap.git',
+    featured: false,
+  },
+  {
+    id: 3,
+    title: 'PawKeeper',
+    description: {
+      en: '...',
+      fr: '...',
+    },
+    longDescription: {
+      en: '...',
+      fr: '...',
+    },
+    media: [
+      { url: '/projects/pawkeeper/4screens_1.jpg', duration: 5000 },
+      { url: '/projects/pawkeeper/4screens_2.jpg', duration: 5000 }
+    ],
+    technologies: ['Kotlin', 'Android Studio', 'Jetpack Compose', 'Room Database'],
+    githubUrl: 'https://github.com/SservXF/PawKeeper.git',
+    featured: false,
+  },
+  {
+    id: 4,
     title: '2 in 1 : Slither.io & Snake',
     description: {
       en: 'A brief description',
@@ -40,7 +97,7 @@ export const projects = [
     featured: true,
   },
   {
-    id: 2,
+    id: 5,
     title: 'Bomberman',
     description: {
       en: 'Another amazing project',
@@ -59,25 +116,7 @@ export const projects = [
     featured: true,
   },
   {
-    id: 3,
-    title: 'Hackathon - WeatherMap',
-    description: {
-      en: 'A third project ',
-      fr: 'Un troisième projet',
-    },
-    longDescription: {
-      en: '...',
-      fr: '...',
-    },
-    media: [
-      { url: '/projects/weathermap/map.png'}
-    ],
-    technologies: ['Java', 'Spring Boot', 'React', 'Leaflet', 'OpenWeatherMap API'],
-    githubUrl: 'https://github.com/SservXF/WeatherMap.git',
-    featured: false,
-  },
-    {
-    id: 4,
+    id: 6,
     title: 'Poképong',
     description: {
       en: '...',
@@ -100,7 +139,7 @@ export const projects = [
     featured: false,
   },
   {
-    id: 5,
+    id: 7,
     title: 'Site de fidélité',
     description: {
       en: '...',
@@ -119,27 +158,7 @@ export const projects = [
     featured: false,
   },
   {
-    id: 6,
-    title: 'HydrogeneGPS',
-    description: {
-      en: '...',
-      fr: '...',
-    },
-    longDescription: {
-      en: '...',
-      fr: '...',
-    },
-    media: [
-      { url: '/projects/hydrogeneGPS/trajet.webm', duration: 12000 },
-      { url: '/projects/hydrogeneGPS/eviter.png', duration: 3000 },
-      { url: '/projects/hydrogeneGPS/lignes.webm', duration: 8000 }
-    ],
-    technologies: ['React', 'Java', 'Springboot', 'Maven', 'Docker', 'Leaflet', 'API IDF Mobilités', 'OpenStreetMap'],
-    githubUrl: 'https://github.com/SservXF/Website-Cartes-Fidelite.git',
-    featured: false,
-  },
-  {
-    id: 7,
+    id: 8,
     title: 'Tetris',
     description: {
       en: '...',
@@ -157,7 +176,7 @@ export const projects = [
     featured: false,
   },
   {
-    id: 8,
+    id: 9,
     title: 'PieceOut',
     description: {
       en: '...',

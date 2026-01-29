@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
+    "deploy": "wrangler deploy --assets=dist",
     "preview": "vite preview"
   },
   "dependencies": {

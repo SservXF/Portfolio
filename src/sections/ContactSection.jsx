@@ -8,7 +8,7 @@ import { useLanguage } from '../context/LanguageContext'
 import { personalInfo } from '../config/personal'
 
 export default function ContactSection() {
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
   const [isCVModalOpen, setIsCVModalOpen] = useState(false)
 
   const contactLinks = [
@@ -99,7 +99,7 @@ export default function ContactSection() {
       <CVPreviewModal
         isOpen={isCVModalOpen}
         onClose={() => setIsCVModalOpen(false)}
-        cvUrl={personalInfo.cvUrl}
+        cvUrl={personalInfo.cvUrls[language] ?? personalInfo.cvUrls.en}
       />
     </Section>
   )

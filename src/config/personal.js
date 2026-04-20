@@ -11,7 +11,10 @@ export const personalInfo = {
   email: 'yazici.servan94@gmail.com',
   github: 'https://github.com/SservXF',
   linkedin: 'https://linkedin.com/in/servan-yazici/',
-  cvUrl: '/cv_YAZICI_Servan.pdf',
+  cvUrls: {
+    en: '/CV_Servan_YAZICI_EN.pdf',
+    fr: '/CV_Servan_YAZICI_FR.pdf',
+  },
 }
 
 // ============================================
@@ -42,8 +45,8 @@ export const projects = [
     id: 2,
     title: 'Hackathon - WeatherMap',
     description: {
-      en: 'A third project ',
-      fr: 'Un troisième projet',
+      en: '...',
+      fr: '...',
     },
     longDescription: {
       en: '...',
@@ -79,12 +82,12 @@ export const projects = [
     id: 4,
     title: '2 in 1 : Slither.io & Snake',
     description: {
-      en: 'A brief description',
-      fr: 'Une brève description',
+      en: '...',
+      fr: '...',
     },
     longDescription: {
-      en: 'A more detailed description',
-      fr: "Une description plus détaillée",
+      en: '...',
+      fr: "...",
     },
     media: [
       { url: '/projects/slitherio/slitherio1.webm', duration: 8000 }, // webm - 8 seconds
@@ -100,12 +103,12 @@ export const projects = [
     id: 5,
     title: 'Bomberman',
     description: {
-      en: 'Another amazing project',
-      fr: 'Un autre projet incroyable',
+      en: '...',
+      fr: '...',
     },
     longDescription: {
-      en: 'Detailed explanation of project',
-      fr: 'Explication détaillée du projet',
+      en: '...',
+      fr: '...',
     },
     media: [
       { url: '/projects/bomberman/bomberman1.webm', duration: 8000 },
@@ -205,8 +208,8 @@ export const experiences = [
     id: 1,
     company: 'JCDecaux',
     role: {
-      en: 'QA Engineer',
-      fr: 'Ingénieur QA',
+      en: 'Automation Developer',
+      fr: 'Développeur Automaticien',
     },
     location: 'Neuilly-sur-Seine, France',
     startDate: '2024-09',

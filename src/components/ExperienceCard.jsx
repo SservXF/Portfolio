@@ -20,16 +20,11 @@ export default function ExperienceCard({ experience, index }) {
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true }}
       transition={{ delay: index * 0.1 }}
-      className="relative pl-8 md:pl-0 md:grid md:grid-cols-5 gap-8 group"
+      className="relative pl-8 md:pl-0 md:grid md:grid-cols-[1fr_3rem_1fr] group"
     >
-      {/* Timeline dot and line */}
-      <div className="absolute left-0 md:left-1/2 md:-translate-x-1/2 top-0 bottom-0 w-px bg-[var(--color-border)]">
-        <div className="absolute top-2 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-[var(--color-primary)] border-4 border-[var(--color-background)] group-hover:scale-125 transition-transform" />
-      </div>
-
-      {/* Date - Left side on desktop */}
-      <div className="hidden md:block md:col-span-2 text-right pr-8">
-        <div className="flex items-center justify-end gap-2 text-[var(--color-text-muted)]">
+      {/* Date - left column (desktop only) */}
+      <div className="hidden md:flex items-start justify-end pt-3 pr-4">
+        <div className="flex items-center gap-2 text-[var(--color-text-muted)]">
           <Calendar size={16} />
           <span className="text-sm font-medium">
             {formatDate(experience.startDate)} — {formatDate(experience.endDate)}
@@ -37,8 +32,17 @@ export default function ExperienceCard({ experience, index }) {
         </div>
       </div>
 
-      {/* Content - Right side */}
-      <div className="md:col-span-3 pb-12">
+      {/* Timeline — centre column on desktop, absolute left on mobile */}
+      <div className="absolute left-0 top-0 bottom-0 w-px bg-[var(--color-border)] md:hidden">
+        <div className="absolute top-3 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-[var(--color-primary)] border-4 border-[var(--color-background)] group-hover:scale-125 transition-transform" />
+      </div>
+      <div className="hidden md:flex flex-col items-center">
+        <div className="mt-3 shrink-0 w-4 h-4 rounded-full bg-[var(--color-primary)] border-4 border-[var(--color-background)] group-hover:scale-125 transition-transform z-10" />
+        <div className="flex-1 w-px bg-[var(--color-border)]" />
+      </div>
+
+      {/* Content - right column */}
+      <div className="pb-12 md:pl-4">
         {/* Mobile date */}
         <div className="md:hidden flex items-center gap-2 text-[var(--color-text-muted)] mb-2">
           <Calendar size={14} />

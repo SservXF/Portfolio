@@ -7,12 +7,13 @@ import Video from 'yet-another-react-lightbox/plugins/video'
 import 'yet-another-react-lightbox/styles.css'
 import 'yet-another-react-lightbox/plugins/counter.css'
 
-export default function ImageCarousel({ 
-  media = [], 
-  alt = '', 
+export default function ImageCarousel({
+  media = [],
+  alt = '',
   autoPlay = true,
   className = '',
-  showFullscreenButton = false
+  showFullscreenButton = false,
+  objectFit = 'cover'
 }) {
   const [emblaRef, emblaApi] = useEmblaCarousel({ 
     loop: true, 
@@ -221,11 +222,11 @@ export default function ImageCarousel({
                         playsInline
                         className={className}
                         draggable="false"
-                        style={{ 
+                        style={{
                           display: 'block',
                           width: '100%',
                           height: '100%',
-                          objectFit: 'cover'
+                          objectFit
                         }}
                       >
                         <source src={mediaUrl} type={`video/${mediaUrl.endsWith('.webm') ? 'webm' : 'mp4'}`} />
@@ -237,11 +238,11 @@ export default function ImageCarousel({
                         alt={`${alt} - ${index + 1}`}
                         className={className}
                         draggable="false"
-                        style={{ 
+                        style={{
                           display: 'block',
                           width: '100%',
                           height: '100%',
-                          objectFit: 'cover'
+                          objectFit
                         }}
                       />
                     )

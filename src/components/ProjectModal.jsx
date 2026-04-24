@@ -16,12 +16,13 @@ export default function ProjectModal({ project, isOpen, onClose }) {
       <div className="p-6 md:p-8">
         {/* Image/Carousel */}
         {projectMedia && (
-          <div className="relative h-64 md:h-80 -mx-6 md:-mx-8 -mt-6 md:-mt-8 mb-6 overflow-hidden bg-[var(--color-background-tertiary)]">
+          <div className="relative h-48 md:h-80 -mx-6 md:-mx-8 -mt-6 md:-mt-8 mb-6 overflow-hidden bg-[var(--color-background-tertiary)]">
             <ImageCarousel
               media={projectMedia}
               alt={project.title}
-              className="w-full h-full object-cover"
+              className="w-full h-full"
               showFullscreenButton={true}
+              objectFit="cover"
             />
           </div>
         )}

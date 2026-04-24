@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, Sun, Moon, Globe } from 'lucide-react'
 import { useScrollDirection } from '../hooks/useScrollDirection'
@@ -12,6 +12,13 @@ export default function Header() {
   const { t, language, setLanguage, availableLanguages } = useLanguage()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [langMenuOpen, setLangMenuOpen] = useState(false)
+
+  useEffect(() => {
+    if (!visible) {
+      setMobileMenuOpen(false)
+      setLangMenuOpen(false)
+    }
+  }, [visible])
 
   const navItems = [
     { key: 'about', href: '#about' },
@@ -151,6 +158,14 @@ export default function Header() {
           </div>
         </div>
       </motion.header>
+
+      {/* Click-outside overlay */}
+      {(mobileMenuOpen || langMenuOpen) && (
+        <div
+          className="fixed inset-0 z-30"
+          onClick={() => { setMobileMenuOpen(false); setLangMenuOpen(false) }}
+        />
+      )}
 
       {/* Mobile Menu */}
       <AnimatePresence>

@@ -44,7 +44,7 @@ export default function Modal({ isOpen, onClose, children }) {
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
             onClick={(e) => e.stopPropagation()}
-            className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto bg-[var(--color-card)] rounded-2xl shadow-2xl"
+            className="relative w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden bg-[var(--color-card)] rounded-2xl shadow-2xl"
           >
             <button
               onClick={onClose}

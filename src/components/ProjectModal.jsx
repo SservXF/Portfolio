@@ -13,32 +13,30 @@ export default function ProjectModal({ project, isOpen, onClose }) {
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
-      <div className="p-6 md:p-8">
-        {/* Image/Carousel */}
-        {projectMedia && (
-          <div className="relative h-48 md:h-80 -mx-6 md:-mx-8 -mt-6 md:-mt-8 mb-6 overflow-hidden bg-[var(--color-background-tertiary)]">
-            <ImageCarousel
-              media={projectMedia}
-              alt={project.title}
-              className="w-full h-full"
-              showFullscreenButton={true}
-              objectFit="cover"
-            />
-          </div>
-        )}
+      {/* Image - pinned at top, never scrolls away */}
+      {projectMedia && (
+        <div className="relative h-48 md:h-64 shrink-0 overflow-hidden bg-[var(--color-background-tertiary)]">
+          <ImageCarousel
+            media={projectMedia}
+            alt={project.title}
+            className="w-full h-full"
+            showFullscreenButton={true}
+            objectFit="cover"
+          />
+        </div>
+      )}
 
-        {/* Title */}
-        <h2 className="text-2xl md:text-3xl font-bold text-[var(--color-text)] mb-4">
+      {/* Content - flex column so only description stretches */}
+      <div className="flex flex-col flex-1 min-h-0 p-6 md:p-8">
+        <h2 className="shrink-0 text-2xl md:text-3xl font-bold text-[var(--color-text)] mb-4">
           {project.title}
         </h2>
 
-        {/* Description */}
-        <p className="text-[var(--color-text-secondary)] mb-6 leading-relaxed">
+        <p className="overflow-y-auto flex-1 min-h-0 text-[var(--color-text-secondary)] mb-6 leading-relaxed">
           {getLocalizedContent(project.longDescription)}
         </p>
 
-        {/* Technologies */}
-        <div className="mb-6">
+        <div className="shrink-0 mb-6">
           <h3 className="text-sm font-semibold text-[var(--color-text-muted)] uppercase tracking-wider mb-3">
             {t('projects.technologies')}
           </h3>
@@ -54,8 +52,7 @@ export default function ProjectModal({ project, isOpen, onClose }) {
           </div>
         </div>
 
-        {/* Links */}
-        <div className="flex flex-wrap gap-4">
+        <div className="shrink-0 flex flex-wrap gap-4">
           {project.githubUrl && (
             <a
               href={project.githubUrl}

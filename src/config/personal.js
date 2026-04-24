@@ -25,12 +25,12 @@ export const projects = [
     id: 1,
     title: 'HydrogeneGPS',
     description: {
-      en: '...',
-      fr: '...',
+      en: 'Offline-capable Île-de-France route planner with Neo4j.',
+      fr: 'Calculateur d\'itinéraires Île-de-France fonctionnant hors ligne.',
     },
     longDescription: {
-      en: '...',
-      fr: '...',
+      en: 'A route planning app built on the IDF Mobilités API, featuring an interactive map with Leaflet and OpenStreetMap. Designed to run standalone without an internet connection after initial data download, it uses a Java Spring Boot backend, a React frontend, and an embedded Neo4j instance for graph-based route computation. Docker handles development and deployment, with a GitLab CI/CD pipeline and unit tests to ensure reliability.',
+      fr: 'Application d\'itinéraire basée sur l\'API IDF Mobilités, avec une interface interactive Leaflet / OpenStreetMap. Conçue pour fonctionner en mode standalone sans connexion internet après téléchargement des données, elle repose sur un backend Java Spring Boot, un frontend React et une instance Neo4j embarquée pour le calcul d\'itinéraires en graphe. Docker est utilisé pour le développement et le déploiement, avec un pipeline GitLab CI/CD et des tests unitaires pour assurer la fiabilité de l\'application.',
     },
     media: [
       { url: '/projects/hydrogeneGPS/trajet.webm', duration: 12000 },
@@ -45,15 +45,16 @@ export const projects = [
     id: 2,
     title: 'Hackathon - WeatherMap',
     description: {
-      en: '...',
-      fr: '...',
+      en: 'Route planner avoiding rain zones in real time. 🏆 Hackathon 2025.',
+      fr: 'Itinéraires évitant la pluie en temps réel. 🏆 Hackathon 2025.',
     },
     longDescription: {
-      en: '...',
-      fr: '...',
+      en: 'A route planning application developed during the Université de Paris Cité Hackathon 2025, where it won first place 🏆. It avoids rain zones in real time by integrating the OpenWeatherMap API with a custom weather-aware routing algorithm. The React frontend uses Leaflet for interactive mapping, while the Java Spring Boot backend handles route computation and weather data processing.',
+      fr: 'Application d\'itinéraire développée lors du Hackathon de l\'Université de Paris Cité 2025, qui remporte la première place 🏆. Elle permet d\'éviter les zones de pluie en temps réel grâce à l\'intégration de l\'API OpenWeatherMap et d\'un algorithme de routage météo-conscient. Le frontend React s\'appuie sur Leaflet pour la cartographie interactive, tandis que le backend Java Spring Boot gère les calculs d\'itinéraires et les données météorologiques.',
     },
     media: [
-      { url: '/projects/weathermap/map.png'}
+      { url: '/projects/weathermap/map.png'},
+      { url: '/projects/weathermap/video.webm', duration: 11000 }
     ],
     technologies: ['Java', 'Spring Boot', 'React', 'Leaflet', 'OpenWeatherMap API'],
     githubUrl: 'https://github.com/SservXF/WeatherMap.git',
@@ -63,12 +64,12 @@ export const projects = [
     id: 3,
     title: 'PawKeeper',
     description: {
-      en: '...',
-      fr: '...',
+      en: 'Android app for managing pet care and vet schedules.',
+      fr: 'Application Android de suivi des soins et rendez-vous vétérinaires.',
     },
     longDescription: {
-      en: '...',
-      fr: '...',
+      en: 'An Android mobile app for managing pet care. Users can create profiles for each animal, schedule events (vaccinations, vet visits, etc.) in a built-in calendar, and receive reminders for upcoming appointments. Built with Kotlin and Jetpack Compose for a modern, fluid UI, and Room Database for local data persistence.',
+      fr: 'Application mobile Android dédiée à la gestion des animaux de compagnie. Les utilisateurs peuvent créer des profils pour chaque animal, planifier des évènements (vaccinations, visites vétérinaires, etc.) dans un calendrier intégré, et recevoir des rappels. Développée en Kotlin avec Jetpack Compose pour une interface moderne et fluide, et Room Database pour la persistance locale des données.',
     },
     media: [
       { url: '/projects/pawkeeper/4screens_1.jpg', duration: 5000 },
@@ -82,12 +83,12 @@ export const projects = [
     id: 4,
     title: '2 in 1 : Slither.io & Snake',
     description: {
-      en: '...',
-      fr: '...',
+      en: 'Slither.io & Snake in one Java codebase, with LAN multiplayer.',
+      fr: 'Slither.io & Snake sur une base Java commune, multijoueur LAN.',
     },
     longDescription: {
-      en: '...',
-      fr: "...",
+      en: 'Two games in one, built in Java with JavaFX on a shared codebase: a Slither.io replica and a classic Snake. An object-oriented architecture, abstract classes, inheritance, and polymorphism lets both modes share core game logic while delivering distinct experiences. The project also features a LAN multiplayer mode with state synchronization and collision handling, developed as part of an object-oriented programming course.',
+      fr: 'Deux jeux en un, développés en Java avec JavaFX sur une base de code commune : une réplique de Slither.io et un Snake classique. L\'architecture orientée objet, classes abstraites, héritage et polymorphisme permettant aux deux modes de partager la logique de jeu tout en proposant des expériences distinctes. Le projet intègre un mode multijoueur en LAN avec synchronisation des états et gestion des collisions, développé dans le cadre d\'un cours de programmation orientée objet.',
     },
     media: [
       { url: '/projects/slitherio/slitherio1.webm', duration: 8000 }, // webm - 8 seconds
@@ -103,12 +104,12 @@ export const projects = [
     id: 5,
     title: 'Bomberman',
     description: {
-      en: '...',
-      fr: '...',
+      en: 'Bomberman clone in C with LAN multiplayer and NCurses.',
+      fr: 'Clone de Bomberman en C, multijoueur LAN et interface NCurses.',
     },
     longDescription: {
-      en: '...',
-      fr: '...',
+      en: 'A Bomberman clone written in C, fully playable over a local network and rendered in text mode using the NCurses library. The server manages arenas, game configurations, and client synchronization, relying on careful memory management and precise network frame composition to deliver a smooth, responsive multiplayer experience.',
+      fr: 'Réplique du jeu Bomberman en C, entièrement jouable en réseau local et affichée en mode texte via la bibliothèque NCurses. Le serveur gère les arènes, les configurations de partie et la synchronisation entre les clients, en s\'appuyant sur une gestion rigoureuse de la mémoire et une composition soignée des trames réseau pour garantir une expérience fluide et réactive.',
     },
     media: [
       { url: '/projects/bomberman/bomberman1.webm', duration: 8000 },
@@ -122,12 +123,12 @@ export const projects = [
     id: 6,
     title: 'Poképong',
     description: {
-      en: '...',
-      fr: '...',
+      en: 'Pokémon-themed Pong with arena-specific special powers.',
+      fr: 'Pong Pokémon avec des pouvoirs spéciaux par arène.',
     },
     longDescription: {
-      en: '...',
-      fr: '...',
+      en: 'A Pong remake with a Pokémon theme, built in Java with JavaFX. Each battle arena introduces unique special powers that build on top of classic Pong mechanics. Visuals draw inspiration from the Pokémon universe, and Gradle handles project and dependency management.',
+      fr: 'Réplique du jeu Pong revisitée dans l\'univers Pokémon, développée en Java avec JavaFX. Chaque arène de combat introduit des pouvoirs spéciaux uniques qui enrichissent les mécaniques classiques de Pong. Les visuels s\'inspirent de l\'univers Pokémon, et Gradle assure la gestion du projet et des dépendances.',
     },
     media: [
       { url: '/projects/pokepong/menus.webm', duration: 15000 },
@@ -145,12 +146,12 @@ export const projects = [
     id: 7,
     title: 'Site de fidélité',
     description: {
-      en: '...',
-      fr: '...',
+      en: 'Loyalty card web app with a video-game-inspired UI.',
+      fr: 'Gestion de cartes de fidélité, interface inspirée des jeux vidéo.',
     },
     longDescription: {
-      en: '...',
-      fr: '...',
+      en: 'A web application for managing loyalty cards for local businesses, with a visual theme inspired by video games. Users can create an account, register their cards, and track their points and rewards. Built with Node.js and Express for the backend, Bootstrap for the frontend, and PostgreSQL for data persistence.',
+      fr: 'Application web dédiée à la gestion de cartes de fidélité pour les commerces locaux, avec une thématique visuelle inspirée des jeux vidéo. Les utilisateurs peuvent créer un compte, enregistrer leurs cartes et suivre leurs points et récompenses. Développée avec Node.js et Express pour le backend, Bootstrap pour le frontend, et PostgreSQL pour la persistance des données.',
     },
     media: [
       { url: '/projects/fidelite/shop.png', duration: 5000 },
@@ -164,12 +165,12 @@ export const projects = [
     id: 8,
     title: 'Tetris',
     description: {
-      en: '...',
-      fr: '...',
+      en: 'Classic Tetris clone in Java, built for fun.',
+      fr: 'Clone de Tetris en Java, développé pour le plaisir.',
     },
     longDescription: {
-      en: '...',
-      fr: '...',
+      en: 'A faithful Tetris clone built in Java with Java Swing, developed over a few evenings as a personal project outside any academic context. The game replicates the classic mechanics of the original : piece rotations, line clearing, progressive speed increase with a clean and functional interface.',
+      fr: 'Réplique fidèle de Tetris développée en Java avec Java Swing, conçue en quelques soirées en dehors de tout cadre académique. Le jeu reproduit les mécaniques classiques de l\'original : rotations des pièces, lignes complètes, accélération progressive avec une interface simple et fonctionnelle.',
     },
     media: [
       { url: '/projects/tetris/tetris.webm', duration: 15000 }
@@ -182,12 +183,12 @@ export const projects = [
     id: 9,
     title: 'PieceOut',
     description: {
-      en: '...',
-      fr: '...',
+      en: 'C++ sliding puzzle game inspired by Piece Out.',
+      fr: 'Jeu de puzzle en C++ inspiré de Piece Out.',
     },
     longDescription: {
-      en: '...',
-      fr: '...',
+      en: 'A puzzle game in C++ inspired by the mobile game Piece Out. Players must slide variously shaped pieces to a target zone on a constrained board, with increasing difficulty across levels. Built with the SFML library for rendering and input handling, and an object-oriented architecture to manage game entities.',
+      fr: 'Jeu de puzzle en C++ inspiré du jeu mobile Piece Out. Le joueur doit déplacer des pièces de formes variées vers une zone cible sur un plateau contraignant les mouvements, avec une difficulté croissante au fil des niveaux. Développé avec la bibliothèque SFML pour le rendu et les entrées, et une architecture orientée objet pour la gestion des entités du jeu.',
     },
     media: [
       { url: '/projects/pieceout/pieceout1.webm', duration: 8000 },

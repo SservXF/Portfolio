@@ -17,4 +17,6 @@ To convert GIF images to WEBM format, you can use the following `ffmpeg` command
 
 ```bash
 ffmpeg -i my-animation.gif -c vp9 -b:v 0 -crf 41 my-animation.webm
+
+ffmpeg -i video.mp4 -c:v libvpx-vp9 -b:v 0 -crf 41 -an video.webm
 ```

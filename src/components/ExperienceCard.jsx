@@ -27,12 +27,12 @@ export default function ExperienceCard({ experience, index }) {
         <div className="flex items-center gap-2 text-[var(--color-text-muted)]">
           <Calendar size={16} />
           <span className="text-sm font-medium">
-            {formatDate(experience.startDate)} — {formatDate(experience.endDate)}
+            {formatDate(experience.startDate)} - {formatDate(experience.endDate)}
           </span>
         </div>
       </div>
 
-      {/* Timeline — centre column on desktop, absolute left on mobile */}
+      {/* Timeline - centre column on desktop, absolute left on mobile */}
       <div className="absolute left-0 top-0 bottom-0 w-px bg-[var(--color-border)] md:hidden">
         <div className="absolute top-3 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-[var(--color-primary)] border-4 border-[var(--color-background)] group-hover:scale-125 transition-transform" />
       </div>
@@ -47,7 +47,7 @@ export default function ExperienceCard({ experience, index }) {
         <div className="md:hidden flex items-center gap-2 text-[var(--color-text-muted)] mb-2">
           <Calendar size={14} />
           <span className="text-xs font-medium">
-            {formatDate(experience.startDate)} — {formatDate(experience.endDate)}
+            {formatDate(experience.startDate)} - {formatDate(experience.endDate)}
           </span>
         </div>
 

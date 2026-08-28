@@ -16,13 +16,13 @@ export default function ContactSection() {
       name: 'GitHub',
       url: personalInfo.github,
       icon: Github,
-      color: 'hover:bg-gray-800 hover:text-white',
+      color: 'hover:bg-[var(--color-text)] hover:text-[var(--color-background)]',
     },
     {
       name: 'LinkedIn',
       url: personalInfo.linkedin,
       icon: Linkedin,
-      color: 'hover:bg-blue-600 hover:text-white',
+      color: 'hover:bg-[var(--color-primary)] hover:text-[var(--color-on-primary)]',
     },
   ]
 
@@ -40,7 +40,7 @@ export default function ContactSection() {
         >
           <button
             onClick={() => setIsCVModalOpen(true)}
-            className="flex items-center gap-2 px-6 py-3 bg-[var(--color-primary)] text-white font-medium rounded-full hover:bg-[var(--color-primary-hover)] transition-colors shadow-lg hover:shadow-xl"
+            className="flex items-center gap-2 px-6 py-3 bg-[var(--color-primary)] text-[var(--color-on-primary)] font-medium rounded-full hover:bg-[var(--color-primary-hover)] transition-colors shadow-lg hover:shadow-xl"
           >
             <Download size={20} />
             <span>{t('contact.downloadCV')}</span>
@@ -48,7 +48,7 @@ export default function ContactSection() {
 
           <a
             href={`mailto:${personalInfo.email}`}
-            className="flex items-center gap-2 px-6 py-3 border-2 border-[var(--color-primary)] text-[var(--color-primary)] font-medium rounded-full hover:bg-[var(--color-primary)] hover:text-white transition-colors"
+            className="flex items-center gap-2 px-6 py-3 border-2 border-[var(--color-primary)] text-[var(--color-primary)] font-medium rounded-full hover:bg-[var(--color-primary)] hover:text-[var(--color-on-primary)] transition-colors"
           >
             <Mail size={20} />
             <span>{t('contact.email')}</span>

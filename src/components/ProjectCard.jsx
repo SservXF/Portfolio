@@ -21,7 +21,7 @@ export default function ProjectCard({ project, onClick, index }) {
           onClick()
         }
       }}
-      className="group cursor-pointer bg-[var(--color-card)] rounded-2xl overflow-hidden border border-[var(--color-border)] hover:border-[var(--color-primary)] transition-all duration-300 hover:shadow-xl"
+      className="group cursor-pointer bg-[var(--color-card)] rounded-3xl overflow-hidden border border-[var(--color-border)] hover:border-[var(--color-primary)] transition-all duration-300 hover:shadow-xl"
     >
       {/* Project Image/Carousel */}
       {projectMedia && (
@@ -37,7 +37,7 @@ export default function ProjectCard({ project, onClick, index }) {
 
       {/* Content */}
       <div className="p-6">
-        <h3 className="text-xl font-bold text-[var(--color-text)] mb-2 group-hover:text-[var(--color-primary)] transition-colors">
+        <h3 className="font-serif text-xl font-semibold text-[var(--color-text)] mb-2 group-hover:text-[var(--color-primary)] transition-colors">
           {project.title}
         </h3>
 

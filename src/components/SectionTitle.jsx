@@ -7,7 +7,7 @@ export default function SectionTitle({ title, subtitle }) {
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        className="text-3xl md:text-4xl font-bold text-[var(--color-text)] mb-4"
+        className="font-serif text-3xl md:text-4xl font-semibold text-[var(--color-text)] mb-4"
       >
         {title}
       </motion.h2>

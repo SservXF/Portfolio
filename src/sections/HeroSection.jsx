@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { ArrowDown } from 'lucide-react'
+import { ArrowDown, Leaf } from 'lucide-react'
 import Section from '../components/Section'
 import SocialLinks from '../components/SocialLinks'
 import { useLanguage } from '../context/LanguageContext'
@@ -15,9 +15,21 @@ export default function HeroSection() {
   return (
     <section
       id="about"
-      className="min-h-screen flex items-center justify-center bg-[var(--color-background)] pt-16"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[var(--color-background)] pt-16"
     >
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      {/* Decorative matcha-foam / fog blobs */}
+      <div
+        className="matcha-blob w-[26rem] h-[26rem] -top-24 -left-24 opacity-30"
+        style={{ background: 'var(--color-primary)' }}
+        aria-hidden="true"
+      />
+      <div
+        className="matcha-blob w-[22rem] h-[22rem] bottom-0 -right-16 opacity-20"
+        style={{ background: 'var(--color-accent)' }}
+        aria-hidden="true"
+      />
+
+      <div className="z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -27,7 +39,7 @@ export default function HeroSection() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
-            className="text-[var(--color-primary)] font-medium mb-4"
+            className="flex items-center justify-center gap-2 text-[var(--color-primary)] font-medium mb-4"
           >
             {t('hero.greeting')}
           </motion.p>
@@ -36,7 +48,7 @@ export default function HeroSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="text-4xl md:text-6xl lg:text-7xl font-bold text-[var(--color-text)] mb-4"
+            className="font-serif text-4xl md:text-6xl lg:text-7xl font-semibold text-[var(--color-text)] mb-4"
           >
             {personalInfo.name}
           </motion.h1>
@@ -67,7 +79,7 @@ export default function HeroSection() {
           >
             <button
               onClick={scrollToProjects}
-              className="px-8 py-3 bg-[var(--color-primary)] text-white font-medium rounded-full hover:bg-[var(--color-primary-hover)] transition-colors shadow-lg hover:shadow-xl"
+              className="px-8 py-3 bg-[var(--color-primary)] text-[var(--color-on-primary)] font-medium rounded-full hover:bg-[var(--color-primary-hover)] transition-colors shadow-lg hover:shadow-xl"
             >
               {t('hero.cta')}
             </button>

@@ -53,12 +53,12 @@ export default function EducationTimeline() {
                 <motion.div
                   whileHover={{ scale: 1.02 }}
                   onClick={() => setSelectedEducation(edu)}
-                  className="bg-[var(--color-card)] rounded-xl p-6 border border-[var(--color-border)] hover:border-[var(--color-primary)] transition-all cursor-pointer shadow-md hover:shadow-xl"
+                  className="bg-[var(--color-card)] rounded-2xl p-6 border border-[var(--color-border)] hover:border-[var(--color-primary)] transition-all cursor-pointer shadow-md hover:shadow-xl"
                 >
                   <div className="text-[var(--color-primary)] font-bold text-lg mb-1">
                     {edu.year}
                   </div>
-                  <h3 className="text-xl font-bold text-[var(--color-text)] mb-2">
+                  <h3 className="font-serif text-xl font-semibold text-[var(--color-text)] mb-2">
                     {getLocalizedContent(edu.degree)}
                   </h3>
                   <div className="flex items-center gap-2 text-[var(--color-text-secondary)] mb-2">
@@ -92,7 +92,7 @@ export default function EducationTimeline() {
                 <div className="text-[var(--color-primary)] font-bold">
                   {selectedEducation.year}
                 </div>
-                <h2 className="text-2xl font-bold text-[var(--color-text)]">
+                <h2 className="font-serif text-2xl font-semibold text-[var(--color-text)]">
                   {getLocalizedContent(selectedEducation.degree)}
                 </h2>
               </div>

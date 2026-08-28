@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, Sun, Moon, Globe } from 'lucide-react'
+import { Menu, X, Sun, Moon, Globe, Leaf } from 'lucide-react'
 import { useScrollDirection } from '../hooks/useScrollDirection'
 import { useTheme } from '../context/ThemeContext'
 import { useLanguage } from '../context/LanguageContext'
@@ -57,7 +57,7 @@ export default function Header() {
                 e.preventDefault()
                 window.scrollTo({ top: 0, behavior: 'smooth' })
               }}
-              className="text-xl font-bold text-[var(--color-text)] hover:text-[var(--color-primary)] transition-colors"
+              className="flex items-center gap-1.5 font-serif text-xl font-semibold text-[var(--color-text)] hover:text-[var(--color-primary)] transition-colors"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -113,7 +113,7 @@ export default function Header() {
                               : 'text-[var(--color-text)]'
                           }`}
                         >
-                          <img 
+                          <img
                             src={`/flags/w20/${lang.flag}.png`}
                             srcSet={`/flags/w40/${lang.flag}.png 2x`}
                             width="20"

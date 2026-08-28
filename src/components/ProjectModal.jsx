@@ -28,7 +28,7 @@ export default function ProjectModal({ project, isOpen, onClose }) {
 
       {/* Content - flex column so only description stretches */}
       <div className="flex flex-col flex-1 min-h-0 p-6 md:p-8">
-        <h2 className="shrink-0 text-2xl md:text-3xl font-bold text-[var(--color-text)] mb-4">
+        <h2 className="shrink-0 font-serif text-2xl md:text-3xl font-semibold text-[var(--color-text)] mb-4">
           {project.title}
         </h2>
 
@@ -69,7 +69,7 @@ export default function ProjectModal({ project, isOpen, onClose }) {
               href={project.liveUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 px-4 py-2 bg-[var(--color-primary)] text-white rounded-lg hover:bg-[var(--color-primary-hover)] transition-colors"
+              className="flex items-center gap-2 px-4 py-2 bg-[var(--color-primary)] text-[var(--color-on-primary)] rounded-lg hover:bg-[var(--color-primary-hover)] transition-colors"
             >
               <ExternalLink size={20} />
               <span>{t('projects.liveDemo')}</span>

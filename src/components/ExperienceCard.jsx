@@ -51,8 +51,8 @@ export default function ExperienceCard({ experience, index }) {
           </span>
         </div>
 
-        <div className="bg-[var(--color-card)] rounded-xl p-6 border border-[var(--color-border)] hover:border-[var(--color-primary)] transition-colors">
-          <h3 className="text-xl font-bold text-[var(--color-text)] mb-1">
+        <div className="bg-[var(--color-card)] rounded-2xl p-6 border border-[var(--color-border)] hover:border-[var(--color-primary)] transition-colors">
+          <h3 className="font-serif text-xl font-semibold text-[var(--color-text)] mb-1">
             {getLocalizedContent(experience.role)}
           </h3>
 

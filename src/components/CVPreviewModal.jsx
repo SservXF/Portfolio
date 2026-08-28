@@ -54,7 +54,7 @@ export default function CVPreviewModal({ isOpen, onClose, cvUrl }) {
                 <a
                   href={cvUrl}
                   download
-                  className="flex items-center gap-2 px-4 py-2 bg-[var(--color-primary)] text-white rounded-lg hover:bg-[var(--color-primary-hover)] transition-colors"
+                  className="flex items-center gap-2 px-4 py-2 bg-[var(--color-primary)] text-[var(--color-on-primary)] rounded-lg hover:bg-[var(--color-primary-hover)] transition-colors"
                   onClick={(e) => e.stopPropagation()}
                 >
                   <Download size={18} />
@@ -84,7 +84,7 @@ export default function CVPreviewModal({ isOpen, onClose, cvUrl }) {
               <a
                 href={cvUrl}
                 download
-                className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-[var(--color-primary)] text-white rounded-lg hover:bg-[var(--color-primary-hover)] transition-colors font-medium"
+                className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-[var(--color-primary)] text-[var(--color-on-primary)] rounded-lg hover:bg-[var(--color-primary-hover)] transition-colors font-medium"
               >
                 <Download size={20} />
                 <span>{t('contact.downloadCV')}</span>
